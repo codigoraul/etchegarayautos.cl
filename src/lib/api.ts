@@ -1,0 +1,73 @@
+import demo from '../data/demo.json';
+
+const API = (import.meta.env.WP_API || process.env.WP_API || 'https://etchegarayautos.cl/admin/wp-json/etchegaray/v1').replace(/\/$/, '');
+const USAR_DEMO = String(import.meta.env.USAR_DEMO_SI_VACIO ?? process.env.USAR_DEMO_SI_VACIO ?? 'true') !== 'false';
+
+export type Foto = { url: string; large?: string; medium?: string; thumb?: string; width?: number; height?: number; alt?: string };
+export type Vehiculo = {
+  id: number; slug: string; titulo: string;
+  marca: { nombre: string; slug: string } | null;
+  modelo: string; version: string; carroceria: string; condicion: string;
+  anio: number; kilometraje: number; transmision: string; combustible: string; traccion: string;
+  motor: string; color: string; puertas: number; duenos: number;
+  precio: number; precio_oferta: number | null; estado_venta: string; destacado: boolean;
+  garantia: string; video_url: string; descripcion: string; descripcion_html?: string;
+  equipamiento: string[]; extras: string[]; documentos: string[];
+  portada: Foto | null; galeria: Foto[]; demo?: boolean;
+};
+export type Ajustes = {
+  nombre: string; whatsapp: string; telefono: string; direccion: string; horario: { dia?: string; horas?: string }[] | string[];
+  instagram: string; facebook: string; mapa_url: string; beneficios: any[]; vendidos_total: number;
+  resenas: { nombre: string; estrellas: number; texto: string }[];
+  acepta_parte_pago: boolean; acepta_consignacion: boolean;
+  financiamiento: { tasa_mensual: number | null; pie_minimo: number | null; plazos: number[]; texto: string };
+  turnstile_site_key: string;
+};
+
+const AJUSTES_BASE: Ajustes = {
+  nombre: 'Etchegaray Autos', whatsapp: '', telefono: '', direccion: "Blanco Encalada 985, esquina O'Higgins, Temuco",
+  horario: [], instagram: 'https://www.instagram.com/etchegarayautos/', facebook: '', mapa_url: '',
+  beneficios: [], vendidos_total: 0, resenas: [], acepta_parte_pago: true, acepta_consignacion: true,
+  financiamiento: { tasa_mensual: 1.6, pie_minimo: 20, plazos: [12, 24, 36, 48, 60], texto: '' },
+  turnstile_site_key: '',
+};
+
+async function get(path: string) {
+  const r = await fetch(API + path, { headers: { Accept: 'application/json' } });
+  if (!r.ok) throw new Error(`${path} → ${r.status}`);
+  return r.json();
+}
+
+let cacheV: Promise<{ vehiculos: Vehiculo[]; demo: boolean }> | null = null;
+export function getVehiculos() {
+  cacheV ??= (async () => {
+    try {
+      const d = await get('/catalogo');
+      const list: Vehiculo[] = d.vehiculos || [];
+      if (list.length || !USAR_DEMO) return { vehiculos: list, demo: false };
+    } catch (e) {
+      console.warn('[api] catálogo no disponible:', (e as Error).message);
+      if (!USAR_DEMO) throw e;
+    }
+    return { vehiculos: demo.vehiculos as unknown as Vehiculo[], demo: true };
+  })();
+  return cacheV;
+}
+
+let cacheA: Promise<Ajustes> | null = null;
+export function getAjustes() {
+  cacheA ??= (async () => {
+    try {
+      const a = await get('/ajustes');
+      return { ...AJUSTES_BASE, ...a, direccion: a.direccion && a.direccion !== 'Blanco Encalada 985, Temuco' ? a.direccion : AJUSTES_BASE.direccion,
+        instagram: a.instagram || AJUSTES_BASE.instagram,
+        financiamiento: { ...AJUSTES_BASE.financiamiento, ...Object.fromEntries(Object.entries(a.financiamiento || {}).filter(([, v]) => v !== null && v !== '' && !(Array.isArray(v) && !v.length))) } } as Ajustes;
+    } catch (e) {
+      console.warn('[api] ajustes no disponibles:', (e as Error).message);
+      return AJUSTES_BASE;
+    }
+  })();
+  return cacheA;
+}
+
+export const PUBLIC_API = (import.meta.env.PUBLIC_WP_API || 'https://etchegarayautos.cl/admin/wp-json/etchegaray/v1').replace(/\/$/, '');

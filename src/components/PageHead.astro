@@ -1,0 +1,8 @@
+---
+import { u } from '../lib/format';
+const { titulo, texto = '' } = Astro.props;
+---
+<div class="cabecera-pagina"><div class="wrap">
+  <div class="migas"><a href={u('/')}>Inicio</a> / {titulo}</div>
+  <h1>{titulo}</h1>{texto && <p>{texto}</p>}
+</div></div>

@@ -1,0 +1,80 @@
+---
+import { u } from '../lib/format';
+import { PUBLIC_API } from '../lib/api';
+const { tipo = 'cotizacion', vehiculoId = 0, vehiculo = '', boton = 'Enviar solicitud', mensajePlaceholder = '¿Algo más que quieras contarnos?', turnstile = '', id = '' } = Astro.props;
+const uid = id || `f-${tipo}-${vehiculoId || 'g'}`;
+---
+<form class="etch-form" data-api={PUBLIC_API} data-tipo={tipo} data-vehiculo={vehiculoId} novalidate id={uid}>
+  <div class="fila">
+    <div class="campo"><label for={`${uid}-n`}>Nombre *</label><input id={`${uid}-n`} name="nombre" type="text" autocomplete="name" required /></div>
+    <div class="campo"><label for={`${uid}-t`}>Teléfono / WhatsApp *</label><input id={`${uid}-t`} name="telefono" type="tel" autocomplete="tel" inputmode="tel" placeholder="+56 9 1234 5678" required /></div>
+  </div>
+  <div class="campo"><label for={`${uid}-e`}>Correo</label><input id={`${uid}-e`} name="email" type="email" autocomplete="email" /></div>
+
+  {tipo === 'cotizacion' && (
+    <fieldset style="border:0;padding:0;margin:0 0 6px">
+      <label class="chk"><input type="checkbox" name="financiamiento" /> Quiero cotizar con financiamiento</label>
+      <label class="chk"><input type="checkbox" name="parte_pago" /> Tengo un auto para dar en parte de pago</label>
+    </fieldset>
+  )}
+  {tipo === 'test_drive' && (
+    <div class="campo"><label for={`${uid}-h`}>Día y horario preferido</label><input id={`${uid}-h`} name="horario" type="text" placeholder="Ej: sábado por la mañana" /></div>
+  )}
+  {tipo === 'consignacion' && (
+    <>
+      <div class="campo"><label for={`${uid}-m`}>¿Qué quieres hacer?</label>
+        <select id={`${uid}-m`} name="modalidad"><option>Vender</option><option>Consignar</option></select></div>
+      <div class="fila">
+        <div class="campo"><label for={`${uid}-ma`}>Marca</label><input id={`${uid}-ma`} name="auto_marca" type="text" /></div>
+        <div class="campo"><label for={`${uid}-mo`}>Modelo</label><input id={`${uid}-mo`} name="auto_modelo" type="text" /></div>
+      </div>
+      <div class="fila">
+        <div class="campo"><label for={`${uid}-an`}>Año</label><input id={`${uid}-an`} name="auto_anio" type="number" min="1980" max="2100" inputmode="numeric" /></div>
+        <div class="campo"><label for={`${uid}-km`}>Kilometraje</label><input id={`${uid}-km`} name="auto_km" type="number" min="0" inputmode="numeric" /></div>
+      </div>
+    </>
+  )}
+  <div class="campo"><label for={`${uid}-ms`}>Mensaje</label><textarea id={`${uid}-ms`} name="mensaje" placeholder={mensajePlaceholder}></textarea></div>
+
+  <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  {turnstile && <div class="cf-turnstile" data-sitekey={turnstile}></div>}
+  <label class="chk"><input type="checkbox" name="acepta" required /> <span>Acepto que Etchegaray Autos use mis datos para contactarme por esta solicitud. <a href={u('/privacidad/')} target="_blank">Ver privacidad</a></span></label>
+  <button class="btn btn-rojo btn-block btn-lg" type="submit">{boton}</button>
+  <div class="msg" role="status" aria-live="polite"></div>
+</form>
+{turnstile && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.etch-form').forEach((form) => {
+    const msg = form.querySelector<HTMLElement>('.msg')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.className = 'msg';
+      const fd = new FormData(form);
+      const nombre = String(fd.get('nombre') || '').trim();
+      const tel = String(fd.get('telefono') || '').trim();
+      if (!nombre || tel.replace(/\D/g, '').length < 8) { msg.className = 'msg err'; msg.textContent = 'Revisa tu nombre y un teléfono válido.'; return; }
+      if (!fd.get('acepta')) { msg.className = 'msg err'; msg.textContent = 'Debes aceptar el uso de tus datos para poder contactarte.'; return; }
+      const tipo = form.dataset.tipo!;
+      const body: Record<string, unknown> = {
+        tipo, nombre, telefono: tel, email: fd.get('email') || '', mensaje: fd.get('mensaje') || '',
+        acepta: true, website: fd.get('website') || '', vehiculo_id: Number(form.dataset.vehiculo) || 0,
+      };
+      const ts = fd.get('cf-turnstile-response'); if (ts) body['cf-turnstile-response'] = ts;
+      if (tipo === 'cotizacion') body.cotizacion = { financiamiento: !!fd.get('financiamiento'), parte_pago: !!fd.get('parte_pago') };
+      if (tipo === 'test_drive') body.test_drive = { horario: fd.get('horario') || '' };
+      if (tipo === 'consignacion') body.consignacion = { modalidad: fd.get('modalidad'), auto_marca: fd.get('auto_marca'), auto_modelo: fd.get('auto_modelo'), auto_anio: fd.get('auto_anio'), auto_km: fd.get('auto_km') };
+      btn.disabled = true; const txt = btn.textContent; btn.textContent = 'Enviando…';
+      try {
+        const r = await fetch(form.dataset.api + '/cotizacion', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok || !d.ok) throw new Error(d.message || 'No pudimos enviar tu solicitud. Intenta de nuevo o escríbenos por WhatsApp.');
+        msg.className = 'msg ok'; msg.textContent = d.mensaje || '¡Recibimos tu solicitud! Te contactaremos pronto.';
+        form.reset();
+        if (d.whatsapp_url) { const a = document.createElement('a'); a.href = d.whatsapp_url; a.target = '_blank'; a.rel = 'noopener'; a.className = 'enlace-flecha'; a.textContent = ' Escríbenos también por WhatsApp'; msg.append(a); }
+      } catch (err) {
+        msg.className = 'msg err'; msg.textContent = (err as Error).message;
+      } finally { btn.disabled = false; btn.textContent = txt; }
+    });
+  });
+</script>

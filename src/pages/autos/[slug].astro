@@ -1,0 +1,111 @@
+---
+import Base from '../../layouts/Base.astro';
+import VehicleCard from '../../components/VehicleCard.astro';
+import QuoteForm from '../../components/QuoteForm.astro';
+import Calculator from '../../components/Calculator.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
+import { getVehiculos, getAjustes } from '../../lib/api';
+import { clp, km, precioFinal, enOferta, foto, waLink, u } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const { vehiculos } = await getVehiculos();
+  return vehiculos.map((v) => ({ params: { slug: v.slug }, props: { v } }));
+}
+const { v } = Astro.props;
+const { vehiculos } = await getVehiculos();
+const a = await getAjustes();
+const fotos = v.galeria?.length ? v.galeria : v.portada ? [v.portada] : [];
+const similares = vehiculos.filter((x) => x.id !== v.id && x.estado_venta !== 'Vendido')
+  .map((x) => ({ x, s: (x.carroceria === v.carroceria ? 3 : 0) + (x.marca?.nombre === v.marca?.nombre ? 2 : 0) - Math.abs(precioFinal(x) - precioFinal(v)) / 5000000 }))
+  .sort((p, q) => q.s - p.s).slice(0, 3).map((o) => o.x);
+const wa = waLink(a, `Hola, me interesa el ${v.titulo} (${clp(precioFinal(v))}). ¿Sigue disponible?`);
+const filas: [string, string | number | null][] = [
+  ['Marca', v.marca?.nombre ?? null], ['Modelo', v.modelo], ['Versión', v.version], ['Año', v.anio], ['Kilometraje', km(v.kilometraje)],
+  ['Tipo', v.carroceria], ['Condición', v.condicion], ['Transmisión', v.transmision], ['Combustible', v.combustible],
+  ['Tracción', v.traccion], ['Motor', v.motor], ['Color', v.color], ['Puertas', v.puertas || null], ['Dueños', v.duenos || null],
+];
+const desc = (v.descripcion || '').split(/\n{2,}|\n/).filter(Boolean);
+const jsonld = {
+  '@context': 'https://schema.org', '@type': 'Car', name: v.titulo, brand: v.marca?.nombre, model: v.modelo,
+  vehicleModelDate: String(v.anio), bodyType: v.carroceria, color: v.color, fuelType: v.combustible,
+  vehicleTransmission: v.transmision, mileageFromOdometer: { '@type': 'QuantitativeValue', value: v.kilometraje, unitCode: 'KMT' },
+  image: fotos.map((f) => new URL(foto(f, 'large'), Astro.site).href), description: v.descripcion || v.titulo,
+  offers: { '@type': 'Offer', price: precioFinal(v), priceCurrency: 'CLP', availability: v.estado_venta === 'Disponible' ? 'https://schema.org/InStock' : 'https://schema.org/LimitedAvailability',
+    itemCondition: v.condicion === 'Semi-nuevo' ? 'https://schema.org/NewCondition' : 'https://schema.org/UsedCondition', url: new URL(Astro.url.pathname, Astro.site).href },
+};
+---
+<Base titulo={`${v.titulo} en Temuco`} descripcion={`${v.titulo}, ${km(v.kilometraje)}, ${v.transmision}, ${v.combustible}. ${clp(precioFinal(v))}. Cotiza o agenda un test drive en Etchegaray Autos.`} imagen={foto(fotos[0], 'large')} jsonld={jsonld}>
+  <section class="seccion" style="padding-top:28px"><div class="wrap">
+    <div class="migas"><a href={u('/')}>Inicio</a> / <a href={u('/autos/')}>Vehículos</a> / {v.titulo}</div>
+    <div class="ficha">
+      <div>
+        <div class="galeria" data-galeria>
+          <div class="principal">
+            <img data-main src={foto(fotos[0], 'large')} alt={fotos[0]?.alt || v.titulo} width={fotos[0]?.width} height={fotos[0]?.height} fetchpriority="high" />
+            {fotos.length > 1 && <div class="nav-g"><button type="button" data-prev aria-label="Foto anterior">←</button><button type="button" data-next aria-label="Foto siguiente">→</button></div>}
+            <button type="button" class="zoom" data-zoom>Ampliar</button>
+          </div>
+          {fotos.length > 1 && <div class="miniaturas">{fotos.map((f, i) => <button type="button" data-i={i} data-src={foto(f, 'large')} aria-label={`Ver foto ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}><img src={foto(f, 'thumb')} alt="" loading="lazy" /></button>)}</div>}
+          <dialog class="visor" data-visor><button type="button" data-cerrar aria-label="Cerrar">✕</button><img alt={v.titulo} src="" /></dialog>
+        </div>
+
+        {desc.length > 0 && <div class="bloque"><h2>Descripción</h2>{desc.map((p) => <p>{p}</p>)}</div>}
+        <div class="bloque"><h2>Ficha técnica</h2>
+          <table class="tabla"><tbody>{filas.filter(([, x]) => x).map(([k, x]) => <tr><th scope="row">{k}</th><td>{x}</td></tr>)}</tbody></table></div>
+        {v.equipamiento?.length > 0 && <div class="bloque"><h2>Equipamiento</h2><ul class="chips">{v.equipamiento.map((e) => <li>{e}</li>)}</ul></div>}
+        {(v.extras?.length > 0) && <div class="bloque"><h2>Otros extras</h2><ul class="chips">{v.extras.map((e) => <li>{e}</li>)}</ul></div>}
+        {v.documentos?.length > 0 && <div class="bloque"><h2>Documentación</h2><ul class="chips">{v.documentos.map((e) => <li>{e}</li>)}</ul></div>}
+        {v.video_url && <div class="bloque"><h2>Video</h2><p><a class="btn btn-linea" href={v.video_url} target="_blank" rel="noopener">Ver video del vehículo</a></p></div>}
+      </div>
+
+      <aside class="sticky">
+        <div class="panel">
+          <div class="etiquetas" style="position:static;margin-bottom:12px"><span class="tag" style="background:var(--fondo)">{v.condicion}</span>{enOferta(v) && <span class="tag oferta">Oferta</span>}{v.estado_venta !== 'Disponible' && <span class="tag reservado">{v.estado_venta}</span>}{v.garantia && <span class="tag" style="background:var(--fondo)">{v.garantia}</span>}</div>
+          <h1>{v.titulo}</h1>
+          <p style="color:var(--gris);margin-bottom:14px">{v.anio} · {km(v.kilometraje)} · {v.transmision} · {v.combustible}</p>
+          <div class="precio-fila"><span class="precio">{clp(precioFinal(v))}</span>{enOferta(v) && <span class="precio-ant">{clp(v.precio)}</span>}</div>
+          <div style="display:grid;gap:10px;margin-top:18px">
+            {wa && <a class="btn btn-wa btn-block btn-lg" href={wa} target="_blank" rel="noopener"><span style="width:20px;height:20px;display:inline-block"><WhatsAppIcon /></span> Consultar por WhatsApp</a>}
+            <a class="btn btn-rojo btn-block btn-lg" href="#cotizar">Cotizar este auto</a>
+          </div>
+        </div>
+        <div class="panel" id="cotizar">
+          <div class="pestanas" role="tablist">
+            <button role="tab" aria-selected="true" data-tab="cot">Cotizar</button>
+            <button role="tab" aria-selected="false" data-tab="td">Test drive</button>
+          </div>
+          <div data-panel="cot"><QuoteForm tipo="cotizacion" vehiculoId={v.id} vehiculo={v.titulo} boton="Solicitar cotización" turnstile={a.turnstile_site_key} /></div>
+          <div data-panel="td" hidden><QuoteForm tipo="test_drive" vehiculoId={v.id} vehiculo={v.titulo} boton="Agendar test drive" turnstile="" /></div>
+        </div>
+        <Calculator id="ficha" precio={precioFinal(v)} tasa={a.financiamiento.tasa_mensual ?? 1.6} pieMin={a.financiamiento.pie_minimo ?? 20} plazos={a.financiamiento.plazos} />
+      </aside>
+    </div>
+  </div></section>
+
+  {similares.length > 0 && <section class="seccion gris"><div class="wrap"><div class="cab"><h2>Vehículos similares</h2><a class="enlace-flecha" href={u('/autos/')}>Ver todos</a></div><div class="grilla swipe">{similares.map((s) => <VehicleCard v={s} />)}</div></div></section>}
+</Base>
+<script>
+  const g = document.querySelector<HTMLElement>('[data-galeria]');
+  if (g) {
+    const main = g.querySelector<HTMLImageElement>('[data-main]')!;
+    const th = [...g.querySelectorAll<HTMLButtonElement>('.miniaturas button')];
+    const visor = g.querySelector<HTMLDialogElement>('[data-visor]')!;
+    let i = 0;
+    const show = (n: number) => {
+      if (!th.length) return;
+      i = (n + th.length) % th.length; main.src = th[i].dataset.src!; main.removeAttribute('width'); main.removeAttribute('height');
+      th.forEach((t, k) => t.setAttribute('aria-current', String(k === i)));
+    };
+    th.forEach((t, k) => t.addEventListener('click', () => show(k)));
+    g.querySelector('[data-prev]')?.addEventListener('click', () => show(i - 1));
+    g.querySelector('[data-next]')?.addEventListener('click', () => show(i + 1));
+    g.querySelector('[data-zoom]')!.addEventListener('click', () => { visor.querySelector('img')!.src = main.src; visor.showModal(); });
+    g.querySelector('[data-cerrar]')!.addEventListener('click', () => visor.close());
+    visor.addEventListener('click', (e) => { if (e.target === visor) visor.close(); });
+    document.addEventListener('keydown', (e) => { if (visor.open || (e.target as HTMLElement).closest('input,textarea,select')) return; if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+    document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => (p.hidden = p.dataset.panel !== b.dataset.tab));
+  }));
+</script>

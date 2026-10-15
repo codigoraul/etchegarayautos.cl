@@ -1,0 +1,66 @@
+---
+import { foto, u } from '../lib/format';
+const { fotos = [], wa = '' } = Astro.props as { fotos: any[]; wa: string };
+const S = [
+  { etq: 'Seminuevos y usados', t: 'Tu próximo auto.', p: 'Vehículos seleccionados, información clara y atención personalizada en Temuco.',
+    a: [['Ver vehículos', '/autos/', 'btn-rojo'], ['Cotizar', '/contacto/#cotiza', 'btn-linea']] },
+  { etq: 'Financiamiento', t: 'Elige tu pie y tus cuotas.', p: 'Simula la cuota de tu próximo auto y consulta opciones de financiamiento con nosotros.',
+    a: [['Simular cuota', '/financiamiento/', 'btn-rojo'], ['Hablar con un ejecutivo', wa || '/contacto/#cotiza', 'btn-linea']] },
+  { etq: 'Vende o consigna', t: 'Vende tu auto con respaldo.', p: 'Déjanos los datos de tu vehículo: lo vendemos por ti o lo recibimos como parte de pago.',
+    a: [['Quiero vender', '/vende-tu-auto/', 'btn-rojo'], ['Ver cómo funciona', '/vende-tu-auto/#como', 'btn-linea']] },
+];
+---
+<section class="hero" aria-roledescription="carrusel" aria-label="Destacados" data-hero>
+  <div class="slides">
+    {S.map((s, i) => (
+      <div class="slide" role="group" aria-roledescription="diapositiva" aria-label={`${i + 1} de ${S.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <img class="bg" src={foto(fotos[i] ?? fotos[0], 'large')} alt="" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} />
+        <div class="wrap"><div class="contenido">
+          <span class="etq">{s.etq}</span>
+          {i === 0 ? <h1>{s.t}</h1> : <h2 class="h1">{s.t}</h2>}
+          <p>{s.p}</p>
+          <div class="acciones">{s.a.map(([t, h, c]) => <a class={`btn btn-lg ${c}`} href={u(h)} target={h.startsWith('http') ? '_blank' : undefined} rel={h.startsWith('http') ? 'noopener' : undefined}>{t}</a>)}</div>
+        </div></div>
+      </div>
+    ))}
+  </div>
+  <div class="hero-ctrl"><div class="wrap">
+    <div class="dots" role="tablist" aria-label="Elegir diapositiva">{S.map((s, i) => <button type="button" aria-label={`Ir a: ${s.t}`} aria-current={i === 0 ? 'true' : 'false'}></button>)}</div>
+    <div class="flechas"><button type="button" data-prev aria-label="Anterior">←</button><button type="button" data-next aria-label="Siguiente">→</button></div>
+  </div></div>
+</section>
+<script>
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (hero) {
+    const track = hero.querySelector<HTMLElement>('.slides')!;
+    const slides = [...hero.querySelectorAll<HTMLElement>('.slide')];
+    const dots = [...hero.querySelectorAll<HTMLButtonElement>('.dots button')];
+    const T = 6500; hero.style.setProperty('--t', T + 'ms');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let i = 0, timer: number | undefined, touching = false;
+    const to = (n: number) => track.scrollTo({ left: ((n + slides.length) % slides.length) * track.clientWidth, behavior: reduce ? 'auto' : 'smooth' });
+    const mark = (n: number) => {
+      if (n === i && dots[n].getAttribute('aria-current') === 'true') return;
+      i = n;
+      slides.forEach((s, k) => s.setAttribute('aria-hidden', String(k !== i)));
+      dots.forEach((d, k) => { d.setAttribute('aria-current', String(k === i)); if (k === i) { d.style.animation = 'none'; void d.offsetWidth; d.style.animation = ''; } });
+    };
+    const play = () => { clearTimeout(timer); if (!reduce && !touching) timer = window.setTimeout(() => to(i + 1), T); };
+    let raf = 0;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => { mark(Math.round(track.scrollLeft / track.clientWidth)); });
+      clearTimeout(timer); timer = window.setTimeout(play, 250);
+    }, { passive: true });
+    dots.forEach((d, k) => d.addEventListener('click', () => to(k)));
+    hero.querySelector('[data-prev]')!.addEventListener('click', () => to(i - 1));
+    hero.querySelector('[data-next]')!.addEventListener('click', () => to(i + 1));
+    hero.addEventListener('mouseenter', () => { clearTimeout(timer); hero.classList.add('pausa'); });
+    hero.addEventListener('mouseleave', () => { hero.classList.remove('pausa'); play(); });
+    hero.addEventListener('focusin', () => clearTimeout(timer));
+    track.addEventListener('touchstart', () => { touching = true; clearTimeout(timer); }, { passive: true });
+    track.addEventListener('touchend', () => { touching = false; play(); }, { passive: true });
+    addEventListener('resize', () => track.scrollTo({ left: i * track.clientWidth }));
+    play();
+  }
+</script>

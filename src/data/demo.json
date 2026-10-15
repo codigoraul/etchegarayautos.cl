@@ -1,0 +1,770 @@
+{
+ "vehiculos": [
+  {
+   "id": 9001,
+   "slug": "mazda-cx-5-r-2-0-2020",
+   "titulo": "Mazda CX-5 R 2.0 2020",
+   "marca": {
+    "nombre": "Mazda",
+    "slug": "mazda"
+   },
+   "modelo": "CX-5",
+   "version": "R 2.0",
+   "carroceria": "SUV",
+   "condicion": "Usado",
+   "anio": 2020,
+   "kilometraje": 48500,
+   "transmision": "Automática",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "2.0 L",
+   "color": "Gris",
+   "puertas": 5,
+   "duenos": 1,
+   "precio": 17990000,
+   "precio_oferta": 16990000,
+   "estado_venta": "Disponible",
+   "destacado": true,
+   "garantia": "Garantía mecánica 3 meses",
+   "video_url": "",
+   "descripcion": "Mazda CX-5 R 2.0 2020 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/suv-02.jpg",
+    "large": "/demo/suv-02.jpg",
+    "medium": "/demo/suv-02-m.jpg",
+    "thumb": "/demo/suv-02-s.jpg",
+    "width": 1600,
+    "height": 638,
+    "alt": "Mazda CX-5 R 2.0 2020"
+   },
+   "galeria": [
+    {
+     "url": "/demo/suv-02.jpg",
+     "large": "/demo/suv-02.jpg",
+     "medium": "/demo/suv-02-m.jpg",
+     "thumb": "/demo/suv-02-s.jpg",
+     "width": 1600,
+     "height": 638,
+     "alt": "Mazda CX-5 R 2.0 2020"
+    },
+    {
+     "url": "/demo/suv-03.jpg",
+     "large": "/demo/suv-03.jpg",
+     "medium": "/demo/suv-03-m.jpg",
+     "thumb": "/demo/suv-03-s.jpg",
+     "width": 1600,
+     "height": 565,
+     "alt": "Mazda CX-5 R 2.0 2020"
+    },
+    {
+     "url": "/demo/suv-04.jpg",
+     "large": "/demo/suv-04.jpg",
+     "medium": "/demo/suv-04-m.jpg",
+     "thumb": "/demo/suv-04-s.jpg",
+     "width": 1600,
+     "height": 752,
+     "alt": "Mazda CX-5 R 2.0 2020"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9002,
+   "slug": "toyota-yaris-sport-1-5-2021",
+   "titulo": "Toyota Yaris Sport 1.5 2021",
+   "marca": {
+    "nombre": "Toyota",
+    "slug": "toyota"
+   },
+   "modelo": "Yaris",
+   "version": "Sport 1.5",
+   "carroceria": "Sedán",
+   "condicion": "Semi-nuevo",
+   "anio": 2021,
+   "kilometraje": 32000,
+   "transmision": "Automática",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "1.5 L",
+   "color": "Blanco",
+   "puertas": 4,
+   "duenos": 1,
+   "precio": 11490000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": true,
+   "garantia": "",
+   "video_url": "",
+   "descripcion": "Toyota Yaris Sport 1.5 2021 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/sedan-01.jpg",
+    "large": "/demo/sedan-01.jpg",
+    "medium": "/demo/sedan-01-m.jpg",
+    "thumb": "/demo/sedan-01-s.jpg",
+    "width": 1600,
+    "height": 1069,
+    "alt": "Toyota Yaris Sport 1.5 2021"
+   },
+   "galeria": [
+    {
+     "url": "/demo/sedan-01.jpg",
+     "large": "/demo/sedan-01.jpg",
+     "medium": "/demo/sedan-01-m.jpg",
+     "thumb": "/demo/sedan-01-s.jpg",
+     "width": 1600,
+     "height": 1069,
+     "alt": "Toyota Yaris Sport 1.5 2021"
+    },
+    {
+     "url": "/demo/auto-blanco-01.jpg",
+     "large": "/demo/auto-blanco-01.jpg",
+     "medium": "/demo/auto-blanco-01-m.jpg",
+     "thumb": "/demo/auto-blanco-01-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Toyota Yaris Sport 1.5 2021"
+    },
+    {
+     "url": "/demo/sedan-02.jpg",
+     "large": "/demo/sedan-02.jpg",
+     "medium": "/demo/sedan-02-m.jpg",
+     "thumb": "/demo/sedan-02-s.jpg",
+     "width": 1600,
+     "height": 1069,
+     "alt": "Toyota Yaris Sport 1.5 2021"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9003,
+   "slug": "suzuki-swift-glx-1-2-2022",
+   "titulo": "Suzuki Swift GLX 1.2 2022",
+   "marca": {
+    "nombre": "Suzuki",
+    "slug": "suzuki"
+   },
+   "modelo": "Swift",
+   "version": "GLX 1.2",
+   "carroceria": "Hatchback",
+   "condicion": "Semi-nuevo",
+   "anio": 2022,
+   "kilometraje": 21000,
+   "transmision": "Manual",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "1.2 L",
+   "color": "Rojo",
+   "puertas": 5,
+   "duenos": 1,
+   "precio": 10990000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": true,
+   "garantia": "Garantía mecánica 3 meses",
+   "video_url": "",
+   "descripcion": "Suzuki Swift GLX 1.2 2022 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix",
+    "Control de estabilidad",
+    "Pantalla táctil"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/hatchback-01.jpg",
+    "large": "/demo/hatchback-01.jpg",
+    "medium": "/demo/hatchback-01-m.jpg",
+    "thumb": "/demo/hatchback-01-s.jpg",
+    "width": 1600,
+    "height": 1067,
+    "alt": "Suzuki Swift GLX 1.2 2022"
+   },
+   "galeria": [
+    {
+     "url": "/demo/hatchback-01.jpg",
+     "large": "/demo/hatchback-01.jpg",
+     "medium": "/demo/hatchback-01-m.jpg",
+     "thumb": "/demo/hatchback-01-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Suzuki Swift GLX 1.2 2022"
+    },
+    {
+     "url": "/demo/hatchback-02.jpg",
+     "large": "/demo/hatchback-02.jpg",
+     "medium": "/demo/hatchback-02-m.jpg",
+     "thumb": "/demo/hatchback-02-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Suzuki Swift GLX 1.2 2022"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9004,
+   "slug": "chevrolet-d-max-4x4-2-5-2019",
+   "titulo": "Chevrolet D-Max 4x4 2.5 2019",
+   "marca": {
+    "nombre": "Chevrolet",
+    "slug": "chevrolet"
+   },
+   "modelo": "D-Max",
+   "version": "4x4 2.5",
+   "carroceria": "Camioneta",
+   "condicion": "Usado",
+   "anio": 2019,
+   "kilometraje": 89000,
+   "transmision": "Manual",
+   "combustible": "Diésel",
+   "traccion": "4x4",
+   "motor": "2.5 L",
+   "color": "Blanco",
+   "puertas": 4,
+   "duenos": 2,
+   "precio": 14990000,
+   "precio_oferta": 13990000,
+   "estado_venta": "Disponible",
+   "destacado": true,
+   "garantia": "",
+   "video_url": "",
+   "descripcion": "Chevrolet D-Max 4x4 2.5 2019 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix",
+    "Control de estabilidad",
+    "Pantalla táctil",
+    "Apple CarPlay / Android Auto",
+    "Llave inteligente"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/camioneta-02.jpg",
+    "large": "/demo/camioneta-02.jpg",
+    "medium": "/demo/camioneta-02-m.jpg",
+    "thumb": "/demo/camioneta-02-s.jpg",
+    "width": 1600,
+    "height": 1067,
+    "alt": "Chevrolet D-Max 4x4 2.5 2019"
+   },
+   "galeria": [
+    {
+     "url": "/demo/camioneta-02.jpg",
+     "large": "/demo/camioneta-02.jpg",
+     "medium": "/demo/camioneta-02-m.jpg",
+     "thumb": "/demo/camioneta-02-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Chevrolet D-Max 4x4 2.5 2019"
+    },
+    {
+     "url": "/demo/camioneta-03.jpg",
+     "large": "/demo/camioneta-03.jpg",
+     "medium": "/demo/camioneta-03-m.jpg",
+     "thumb": "/demo/camioneta-03-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Chevrolet D-Max 4x4 2.5 2019"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9005,
+   "slug": "kia-sportage-ex-2-0-2018",
+   "titulo": "Kia Sportage EX 2.0 2018",
+   "marca": {
+    "nombre": "Kia",
+    "slug": "kia"
+   },
+   "modelo": "Sportage",
+   "version": "EX 2.0",
+   "carroceria": "SUV",
+   "condicion": "Usado",
+   "anio": 2018,
+   "kilometraje": 76000,
+   "transmision": "Automática",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "2.0 L",
+   "color": "Gris",
+   "puertas": 5,
+   "duenos": 2,
+   "precio": 12490000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": false,
+   "garantia": "Garantía mecánica 3 meses",
+   "video_url": "",
+   "descripcion": "Kia Sportage EX 2.0 2018 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix",
+    "Control de estabilidad",
+    "Pantalla táctil",
+    "Apple CarPlay / Android Auto",
+    "Llave inteligente",
+    "Sensor de luces",
+    "Neblineros"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/suv-03.jpg",
+    "large": "/demo/suv-03.jpg",
+    "medium": "/demo/suv-03-m.jpg",
+    "thumb": "/demo/suv-03-s.jpg",
+    "width": 1600,
+    "height": 565,
+    "alt": "Kia Sportage EX 2.0 2018"
+   },
+   "galeria": [
+    {
+     "url": "/demo/suv-03.jpg",
+     "large": "/demo/suv-03.jpg",
+     "medium": "/demo/suv-03-m.jpg",
+     "thumb": "/demo/suv-03-s.jpg",
+     "width": 1600,
+     "height": 565,
+     "alt": "Kia Sportage EX 2.0 2018"
+    },
+    {
+     "url": "/demo/suv-02.jpg",
+     "large": "/demo/suv-02.jpg",
+     "medium": "/demo/suv-02-m.jpg",
+     "thumb": "/demo/suv-02-s.jpg",
+     "width": 1600,
+     "height": 638,
+     "alt": "Kia Sportage EX 2.0 2018"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9006,
+   "slug": "hyundai-accent-gl-1-4-2020",
+   "titulo": "Hyundai Accent GL 1.4 2020",
+   "marca": {
+    "nombre": "Hyundai",
+    "slug": "hyundai"
+   },
+   "modelo": "Accent",
+   "version": "GL 1.4",
+   "carroceria": "Sedán",
+   "condicion": "Usado",
+   "anio": 2020,
+   "kilometraje": 54000,
+   "transmision": "Manual",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "1.4 L",
+   "color": "Blanco",
+   "puertas": 4,
+   "duenos": 1,
+   "precio": 8990000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": false,
+   "garantia": "",
+   "video_url": "",
+   "descripcion": "Hyundai Accent GL 1.4 2020 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix",
+    "Control de estabilidad",
+    "Pantalla táctil",
+    "Apple CarPlay / Android Auto",
+    "Llave inteligente",
+    "Sensor de luces",
+    "Neblineros"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/sedan-02.jpg",
+    "large": "/demo/sedan-02.jpg",
+    "medium": "/demo/sedan-02-m.jpg",
+    "thumb": "/demo/sedan-02-s.jpg",
+    "width": 1600,
+    "height": 1069,
+    "alt": "Hyundai Accent GL 1.4 2020"
+   },
+   "galeria": [
+    {
+     "url": "/demo/sedan-02.jpg",
+     "large": "/demo/sedan-02.jpg",
+     "medium": "/demo/sedan-02-m.jpg",
+     "thumb": "/demo/sedan-02-s.jpg",
+     "width": 1600,
+     "height": 1069,
+     "alt": "Hyundai Accent GL 1.4 2020"
+    },
+    {
+     "url": "/demo/sedan-01.jpg",
+     "large": "/demo/sedan-01.jpg",
+     "medium": "/demo/sedan-01-m.jpg",
+     "thumb": "/demo/sedan-01-s.jpg",
+     "width": 1600,
+     "height": 1069,
+     "alt": "Hyundai Accent GL 1.4 2020"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9007,
+   "slug": "peugeot-208-like-1-2-2021",
+   "titulo": "Peugeot 208 Like 1.2 2021",
+   "marca": {
+    "nombre": "Peugeot",
+    "slug": "peugeot"
+   },
+   "modelo": "208",
+   "version": "Like 1.2",
+   "carroceria": "Hatchback",
+   "condicion": "Semi-nuevo",
+   "anio": 2021,
+   "kilometraje": 29000,
+   "transmision": "Manual",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "1.2 L",
+   "color": "Gris",
+   "puertas": 5,
+   "duenos": 1,
+   "precio": 10290000,
+   "precio_oferta": 9790000,
+   "estado_venta": "Reservado",
+   "destacado": false,
+   "garantia": "Garantía mecánica 3 meses",
+   "video_url": "",
+   "descripcion": "Peugeot 208 Like 1.2 2021 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/hatchback-02.jpg",
+    "large": "/demo/hatchback-02.jpg",
+    "medium": "/demo/hatchback-02-m.jpg",
+    "thumb": "/demo/hatchback-02-s.jpg",
+    "width": 1600,
+    "height": 1067,
+    "alt": "Peugeot 208 Like 1.2 2021"
+   },
+   "galeria": [
+    {
+     "url": "/demo/hatchback-02.jpg",
+     "large": "/demo/hatchback-02.jpg",
+     "medium": "/demo/hatchback-02-m.jpg",
+     "thumb": "/demo/hatchback-02-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Peugeot 208 Like 1.2 2021"
+    },
+    {
+     "url": "/demo/hatchback-01.jpg",
+     "large": "/demo/hatchback-01.jpg",
+     "medium": "/demo/hatchback-01-m.jpg",
+     "thumb": "/demo/hatchback-01-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Peugeot 208 Like 1.2 2021"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9008,
+   "slug": "ford-ranger-xlt-3-2-2018",
+   "titulo": "Ford Ranger XLT 3.2 2018",
+   "marca": {
+    "nombre": "Ford",
+    "slug": "ford"
+   },
+   "modelo": "Ranger",
+   "version": "XLT 3.2",
+   "carroceria": "Camioneta",
+   "condicion": "Usado",
+   "anio": 2018,
+   "kilometraje": 98000,
+   "transmision": "Automática",
+   "combustible": "Diésel",
+   "traccion": "4x4",
+   "motor": "3.2 L",
+   "color": "Gris",
+   "puertas": 4,
+   "duenos": 2,
+   "precio": 15990000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": false,
+   "garantia": "",
+   "video_url": "",
+   "descripcion": "Ford Ranger XLT 3.2 2018 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/camioneta-03.jpg",
+    "large": "/demo/camioneta-03.jpg",
+    "medium": "/demo/camioneta-03-m.jpg",
+    "thumb": "/demo/camioneta-03-s.jpg",
+    "width": 1600,
+    "height": 1067,
+    "alt": "Ford Ranger XLT 3.2 2018"
+   },
+   "galeria": [
+    {
+     "url": "/demo/camioneta-03.jpg",
+     "large": "/demo/camioneta-03.jpg",
+     "medium": "/demo/camioneta-03-m.jpg",
+     "thumb": "/demo/camioneta-03-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Ford Ranger XLT 3.2 2018"
+    },
+    {
+     "url": "/demo/camioneta-02.jpg",
+     "large": "/demo/camioneta-02.jpg",
+     "medium": "/demo/camioneta-02-m.jpg",
+     "thumb": "/demo/camioneta-02-s.jpg",
+     "width": 1600,
+     "height": 1067,
+     "alt": "Ford Ranger XLT 3.2 2018"
+    }
+   ],
+   "demo": true
+  },
+  {
+   "id": 9009,
+   "slug": "nissan-qashqai-advance-2-0-2019",
+   "titulo": "Nissan Qashqai Advance 2.0 2019",
+   "marca": {
+    "nombre": "Nissan",
+    "slug": "nissan"
+   },
+   "modelo": "Qashqai",
+   "version": "Advance 2.0",
+   "carroceria": "SUV",
+   "condicion": "Usado",
+   "anio": 2019,
+   "kilometraje": 63000,
+   "transmision": "Automática",
+   "combustible": "Bencina",
+   "traccion": "4x2",
+   "motor": "2.0 L",
+   "color": "Rojo",
+   "puertas": 5,
+   "duenos": 1,
+   "precio": 12990000,
+   "precio_oferta": null,
+   "estado_venta": "Disponible",
+   "destacado": false,
+   "garantia": "Garantía mecánica 3 meses",
+   "video_url": "",
+   "descripcion": "Nissan Qashqai Advance 2.0 2019 en excelente estado, mantenciones al día en servicio autorizado y documentación lista para transferir. Revísalo con calma: agenda un test drive sin compromiso.",
+   "equipamiento": [
+    "Aire acondicionado",
+    "Alza vidrios eléctricos",
+    "Cierre centralizado",
+    "Dirección asistida",
+    "Airbags frontales",
+    "Frenos ABS",
+    "Radio con Bluetooth",
+    "Cámara de retroceso",
+    "Sensores de estacionamiento",
+    "Control crucero",
+    "Llantas de aleación",
+    "Isofix"
+   ],
+   "extras": [
+    "Segunda llave",
+    "Manual de usuario"
+   ],
+   "documentos": [
+    "Revisión técnica al día",
+    "Permiso de circulación al día",
+    "Sin multas"
+   ],
+   "portada": {
+    "url": "/demo/suv-04.jpg",
+    "large": "/demo/suv-04.jpg",
+    "medium": "/demo/suv-04-m.jpg",
+    "thumb": "/demo/suv-04-s.jpg",
+    "width": 1600,
+    "height": 752,
+    "alt": "Nissan Qashqai Advance 2.0 2019"
+   },
+   "galeria": [
+    {
+     "url": "/demo/suv-04.jpg",
+     "large": "/demo/suv-04.jpg",
+     "medium": "/demo/suv-04-m.jpg",
+     "thumb": "/demo/suv-04-s.jpg",
+     "width": 1600,
+     "height": 752,
+     "alt": "Nissan Qashqai Advance 2.0 2019"
+    },
+    {
+     "url": "/demo/suv-02.jpg",
+     "large": "/demo/suv-02.jpg",
+     "medium": "/demo/suv-02-m.jpg",
+     "thumb": "/demo/suv-02-s.jpg",
+     "width": 1600,
+     "height": 638,
+     "alt": "Nissan Qashqai Advance 2.0 2019"
+    }
+   ],
+   "demo": true
+  }
+ ]
+}

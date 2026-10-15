@@ -1,0 +1,42 @@
+---
+import { u } from '../lib/format';
+import Icon from './Icon.astro';
+const { a } = Astro.props;
+const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typeof h === 'string' ? h : `${h.dia ?? ''} ${h.horas ?? ''}`.trim());
+const mapa = a.mapa_url || 'https://www.google.com/maps/search/?api=1&query=Blanco+Encalada+985,+Temuco';
+---
+<footer class="footer">
+  <div class="wrap cols">
+    <div>
+      <a class="logo" href={u('/')}><img src={u('/img/logo-sm.png')} alt="Etchegaray Autos" width="178" height="46" loading="lazy" /></a>
+      <p>Autos seminuevos y usados en Temuco. Vehículos seleccionados, información clara y atención personalizada.</p>
+    </div>
+    <div>
+      <h3>Sitio</h3>
+      <ul>
+        <li><a href={u('/autos/')}>Vehículos</a></li><li><a href={u('/financiamiento/')}>Financiamiento</a></li>
+        <li><a href={u('/vende-tu-auto/')}>Vende tu auto</a></li><li><a href={u('/nosotros/')}>Quiénes somos</a></li><li><a href={u('/contacto/')}>Contacto</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Categorías</h3>
+      <ul>
+        <li><a href={u('/autos/?tipo=SUV')}>SUV</a></li><li><a href={u('/autos/?tipo=Sed%C3%A1n')}>Sedán</a></li>
+        <li><a href={u('/autos/?tipo=Hatchback')}>Hatchback</a></li><li><a href={u('/autos/?tipo=Camioneta')}>Camioneta</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Visítanos</h3>
+      <ul>
+        <li><a href={mapa} target="_blank" rel="noopener">{a.direccion}</a></li>
+        {horarios.map((h: string) => <li>{h}</li>)}
+        {a.telefono && <li><a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></li>}
+        <li><a href={a.instagram} target="_blank" rel="noopener">Instagram @etchegarayautos</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="legal"><div class="wrap">
+    <span>© {new Date().getFullYear()} Etchegaray Autos. Precios y disponibilidad sujetos a cambios.</span>
+    <span><a href={u('/privacidad/')}>Privacidad</a> · <a href="https://xn--diseopaginas-lkb.cl" target="_blank" rel="noopener">Diseño web por DiseñoPaginas.cl</a></span>
+  </div></div>
+</footer>

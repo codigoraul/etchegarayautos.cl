@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import Icon from '../components/Icon.astro';
+import { getAjustes } from '../lib/api';
+import { waLink } from '../lib/format';
+const a = await getAjustes();
+const wa = waLink(a, 'Hola, quiero hacer una consulta.');
+const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typeof h === 'string' ? h : `${h.dia ?? ''} ${h.horas ?? ''}`.trim());
+---
+<Base titulo="Contacto" descripcion="Contacta a Etchegaray Autos: cotiza un vehículo, agenda un test drive o visítanos en Blanco Encalada 985, Temuco.">
+  <PageHead titulo="Contacto" texto="Cuéntanos qué auto buscas y te respondemos a la brevedad." />
+  <section class="seccion"><div class="wrap dos" style="align-items:start">
+    <div class="caja" id="cotiza"><h2 style="font-size:1.8rem">Escríbenos</h2><QuoteForm tipo="cotizacion" id="contacto" boton="Enviar mensaje" turnstile={a.turnstile_site_key} mensajePlaceholder="¿Qué vehículo te interesa o qué necesitas?" /></div>
+    <div>
+      <ul class="lista-ok" style="gap:16px">
+        <li><strong>Dirección:</strong> {a.direccion}</li>
+        {horarios.map((h: string) => <li><strong>Horario:</strong> {h}</li>)}
+        {a.telefono && <li><strong>Teléfono:</strong> <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></li>}
+        <li><strong>Instagram:</strong> <a href={a.instagram} target="_blank" rel="noopener">@etchegarayautos</a></li>
+      </ul>
+      {wa && <p><a class="btn btn-wa" href={wa} target="_blank" rel="noopener">Escribir por WhatsApp</a></p>}
+      <div style="height:340px"><iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Blanco+Encalada+985,+Temuco&output=embed"></iframe></div>
+    </div>
+  </div></section>
+</Base>

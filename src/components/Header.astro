@@ -1,0 +1,49 @@
+---
+import { u } from '../lib/format';
+import Icon from './Icon.astro';
+const { a } = Astro.props;
+const path = Astro.url.pathname;
+const links = [
+  ['/', 'Inicio'], ['/autos/', 'Vehículos'], ['/financiamiento/', 'Financiamiento'],
+  ['/vende-tu-auto/', 'Vende tu auto'], ['/nosotros/', 'Quiénes somos'], ['/contacto/', 'Contacto'],
+];
+const act = (h: string) => h === '/' ? path === u('/') : path.startsWith(u(h));
+const horario = Array.isArray(a.horario) && a.horario.length ? a.horario[0] : null;
+const horTxt = horario ? (typeof horario === 'string' ? horario : `${horario.dia ?? ''} ${horario.horas ?? ''}`.trim()) : '';
+---
+<div class="topbar"><div class="wrap">
+  <span><Icon n="pin" />{a.direccion}</span>
+  <span class="t-der">
+    {horTxt && <span><Icon n="clock" />{horTxt}</span>}
+    {a.telefono && <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}><Icon n="phone" />{a.telefono}</a>}
+    <a href={a.instagram} target="_blank" rel="noopener"><Icon n="insta" />@etchegarayautos</a>
+  </span>
+</div></div>
+<header class="header"><div class="wrap">
+  <a class="logo" href={u('/')} aria-label="Etchegaray Autos, inicio"><img src={u('/img/logo-sm.png')} alt="Etchegaray Autos" width="178" height="46" /></a>
+  <button class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span></button>
+  <nav class="nav" id="nav" aria-label="Principal">
+    {links.map(([h, t]) => <a class="link" href={u(h)} aria-current={act(h) ? 'page' : undefined}>{t}</a>)}
+    <a class="btn btn-rojo" href={u('/contacto/#cotiza')}>Cotizar</a>
+    <div class="nav-extra">
+      <span>{a.direccion}</span>
+      {a.telefono && <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a>}
+      <a href={a.instagram} target="_blank" rel="noopener">Instagram @etchegarayautos</a>
+    </div>
+  </nav>
+</div></header>
+<script>
+  const b = document.querySelector<HTMLButtonElement>('.burger');
+  const n = document.getElementById('nav');
+  const set = (o: boolean) => {
+    if (o) n!.style.top = document.querySelector('.header')!.getBoundingClientRect().bottom + 'px';
+    n!.classList.toggle('abierto', o);
+    b!.setAttribute('aria-expanded', String(o));
+    b!.setAttribute('aria-label', o ? 'Cerrar menú' : 'Abrir menú');
+    document.documentElement.classList.toggle('menu-abierto', o);
+  };
+  b?.addEventListener('click', () => { if (!n!.classList.contains('abierto')) window.scrollTo(0, 0); set(!n!.classList.contains('abierto')); });
+  n?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => set(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+  matchMedia('(min-width: 961px)').addEventListener('change', () => set(false));
+</script>

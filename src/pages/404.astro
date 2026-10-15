@@ -1,0 +1,11 @@
+---
+import { u } from '../lib/format';
+import Base from '../layouts/Base.astro';
+---
+<Base titulo="Página no encontrada" noindex>
+  <section class="seccion"><div class="wrap" style="text-align:center;max-width:640px">
+    <span class="kicker">Error 404</span><h1>Esta página no existe</h1>
+    <p class="lead">Quizás el vehículo ya se vendió o el enlace cambió. Mira los autos disponibles.</p>
+    <a class="btn btn-rojo btn-lg" href={u('/autos/')}>Ver vehículos</a>
+  </div></section>
+</Base>

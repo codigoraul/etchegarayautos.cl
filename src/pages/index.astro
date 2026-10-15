@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import VehicleCard from '../components/VehicleCard.astro';
+import Icon from '../components/Icon.astro';
+import { getVehiculos, getAjustes } from '../lib/api';
+import { waLink, foto, slugify, u } from '../lib/format';
+
+const { vehiculos } = await getVehiculos();
+const a = await getAjustes();
+const disp = vehiculos.filter((v) => v.estado_venta !== 'Vendido');
+const destacados = (disp.filter((v) => v.destacado).concat(disp.filter((v) => !v.destacado))).slice(0, 6);
+const heroFotos = destacados.map((v) => v.portada || v.galeria?.[0]).filter(Boolean).slice(0, 3);
+const marcas = [...new Set(disp.map((v) => v.marca?.nombre).filter(Boolean))].sort() as string[];
+const tipos = [...new Set(disp.map((v) => v.carroceria).filter(Boolean))].sort();
+const cats = tipos.map((t) => {
+  const lista = disp.filter((v) => v.carroceria === t);
+  return { t, n: lista.length, f: lista[0].portada || lista[0].galeria?.[0] };
+});
+const wa = waLink(a, 'Hola, quiero cotizar un vehículo.');
+let k = 0;
+const alt = () => (k++ % 2 ? 'seccion gris' : 'seccion');
+const beneficios = [
+  ['shield', 'Vehículos seleccionados', 'Cada auto se publica con su información real: año, kilometraje, estado y documentos.'],
+  ['doc', 'Documentación clara', 'Te mostramos la documentación del vehículo antes de decidir.'],
+  ['coin', 'Financiamiento', 'Te ayudamos a evaluar pie y cuotas según tu presupuesto.'],
+  ['swap', 'Parte de pago', 'Consulta por recibir tu auto actual como parte de pago.'],
+  ['key', 'Test drive', 'Agenda una prueba de manejo en nuestro local de Temuco.'],
+];
+---
+<Base>
+  <Hero fotos={heroFotos} wa={wa} />
+
+  <section class="buscador" aria-label="Buscar vehículo"><div class="wrap">
+    <form action={u('/autos/')} method="get">
+      <div><label for="b-marca">Marca</label><select id="b-marca" name="marca"><option value="">Todas</option>{marcas.map((m) => <option>{m}</option>)}</select></div>
+      <div><label for="b-tipo">Tipo</label><select id="b-tipo" name="tipo"><option value="">Todos</option>{tipos.map((m) => <option>{m}</option>)}</select></div>
+      <div><label for="b-precio">Precio máximo</label><select id="b-precio" name="pmax"><option value="">Sin límite</option>{[8, 10, 12, 15, 20].map((n) => <option value={n * 1000000}>Hasta ${n} millones</option>)}</select></div>
+      <div><label for="b-cond">Condición</label><select id="b-cond" name="cond"><option value="">Todas</option><option>Semi-nuevo</option><option>Usado</option></select></div>
+      <button class="btn btn-rojo btn-lg" type="submit">Buscar</button>
+    </form>
+  </div></section>
+
+  <section class={alt()}>
+    <div class="wrap">
+      <div class="cab"><div><span class="kicker">Catálogo</span><h2>Vehículos destacados</h2><p>Una selección de lo último que llegó a nuestro local.</p></div><a class="enlace-flecha" href={u('/autos/')}>Ver todos los vehículos</a></div>
+      <div class="grilla swipe">{destacados.map((v, i) => <VehicleCard v={v} prioridad={i < 3} />)}</div>
+    </div>
+  </section>
+
+  <section class={alt()}>
+    <div class="wrap">
+      <div class="cab"><div><span class="kicker">Categorías</span><h2>Busca por tipo de vehículo</h2></div></div>
+      <div class="cats swipe">{cats.map((c) => (
+        <a class="cat" href={u(`/autos/?tipo=${encodeURIComponent(c.t)}`)}>
+          <img src={foto(c.f, 'medium')} alt="" loading="lazy" />
+          <div><strong>{c.t}</strong><span>{c.n} {c.n === 1 ? 'vehículo' : 'vehículos'}</span></div>
+        </a>))}</div>
+    </div>
+  </section>
+
+  <section class={alt()}>
+    <div class="wrap">
+      <div class="cab"><div><span class="kicker">Por qué Etchegaray Autos</span><h2>Comprar con claridad</h2></div></div>
+      <div class="beneficios swipe">{beneficios.map(([ic, t, d]) => <div class="benef"><div class="ico"><Icon n={ic} /></div><h3>{t}</h3><p>{d}</p></div>)}</div>
+    </div>
+  </section>
+
+  <section class={alt()}>
+    <div class="wrap"><div class="banda">
+      <div><h2>¿Quieres vender tu auto?</h2><p>Cuéntanos qué vehículo tienes. Podemos venderlo por ti o recibirlo como parte de pago de tu próximo auto.</p></div>
+      <div class="acciones"><a class="btn btn-rojo btn-lg" href={u('/vende-tu-auto/')}>Vender o consignar</a><a class="btn btn-linea btn-lg" href={u('/financiamiento/')}>Simular cuota</a></div>
+    </div></div>
+  </section>
+
+  {a.resenas.length > 0 && (
+    <section class={alt()}><div class="wrap">
+      <div class="cab"><div><span class="kicker">Clientes</span><h2>Lo que dicen de nosotros</h2></div></div>
+      <div class="resenas swipe">{a.resenas.map((r) => <figure class="resena" style="margin:0"><div class="estrellas" aria-label={`${r.estrellas} de 5`}>{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</div><p>{r.texto}</p><strong>{r.nombre}</strong></figure>)}</div>
+    </div></section>
+  )}
+
+  <section class={alt()}>
+    <div class="wrap dos">
+      <div>
+        <span class="kicker">Quiénes somos</span>
+        <h2>Una automotora cercana, en el centro de Temuco</h2>
+        <p class="lead">Somos Etchegaray Autos: seminuevos y usados con información clara y trato directo, sin letra chica.</p>
+        <ul class="lista-ok"><li>Atención personalizada, presencial y por WhatsApp</li><li>Test drive sin compromiso</li><li>Opciones de financiamiento y parte de pago</li></ul>
+        <a class="btn btn-linea" href={u('/nosotros/')}>Conócenos</a>
+      </div>
+      <div class="imagen-redonda"><img src={foto(heroFotos[1] ?? heroFotos[0], 'large')} alt="Vehículo del catálogo de Etchegaray Autos" loading="lazy" /></div>
+    </div>
+  </section>
+
+  <section class={alt()}>
+    <div class="wrap dos">
+      <div>
+        <span class="kicker">Visítanos</span><h2>Estamos en Temuco</h2>
+        <p class="lead">{a.direccion}</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-rojo" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Blanco+Encalada+985,+Temuco">Cómo llegar</a><a class="btn btn-linea" href={u('/contacto/')}>Contacto</a></div>
+      </div>
+      <iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Blanco+Encalada+985,+Temuco&output=embed"></iframe>
+    </div>
+  </section>
+</Base>

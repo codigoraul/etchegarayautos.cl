@@ -1,0 +1,34 @@
+name: Publicar sitio
+on:
+  repository_dispatch:
+    types: [wp-publicar]
+  workflow_dispatch:
+  push:
+    branches: [main]
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build
+        env:
+          WP_API: https://etchegarayautos.cl/admin/wp-json/etchegaray/v1
+          PUBLIC_WP_API: https://etchegarayautos.cl/admin/wp-json/etchegaray/v1
+          SITE_URL: https://etchegarayautos.cl
+          BASE_PATH: /prueba
+          USAR_DEMO_SI_VACIO: "false"
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./prueba/
+          exclude: |
+            **/admin/**

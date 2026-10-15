@@ -1,0 +1,88 @@
+---
+import { u } from '../../lib/format';
+import Base from '../../layouts/Base.astro';
+import VehicleCard from '../../components/VehicleCard.astro';
+import { getVehiculos } from '../../lib/api';
+
+const { vehiculos } = await getVehiculos();
+const lista = vehiculos.filter((v) => v.estado_venta !== 'Vendido').sort((a, b) => Number(b.destacado) - Number(a.destacado));
+const uniq = (f: (v: any) => any) => [...new Set(lista.map(f).filter(Boolean))].sort() as string[];
+const marcas = uniq((v) => v.marca?.nombre), tipos = uniq((v) => v.carroceria), trans = uniq((v) => v.transmision), combs = uniq((v) => v.combustible);
+const anios = lista.map((v) => v.anio).filter(Boolean);
+---
+<Base titulo="Vehículos seminuevos y usados" descripcion="Catálogo de autos seminuevos y usados en Temuco. Filtra por marca, tipo, año, precio y kilometraje.">
+  <div class="cabecera-pagina"><div class="wrap">
+    <div class="migas"><a href={u('/')}>Inicio</a> / Vehículos</div>
+    <h1>Vehículos</h1><p>Filtra por marca, tipo, año, precio o kilometraje y encuentra tu próximo auto.</p>
+  </div></div>
+  <section class="seccion"><div class="wrap catalogo">
+    <aside class="filtros" id="filtros" aria-label="Filtros">
+      <h2>Filtrar</h2>
+      <form id="f" onsubmit="return false">
+        <div class="campo"><label for="q">Buscar</label><input id="q" type="text" placeholder="Marca, modelo…" /></div>
+        <div class="campo"><label for="marca">Marca</label><select id="marca"><option value="">Todas</option>{marcas.map((m) => <option>{m}</option>)}</select></div>
+        <div class="campo"><label for="tipo">Tipo</label><select id="tipo"><option value="">Todos</option>{tipos.map((m) => <option>{m}</option>)}</select></div>
+        <div class="campo"><label for="cond">Condición</label><select id="cond"><option value="">Todas</option><option>Semi-nuevo</option><option>Usado</option></select></div>
+        <div class="fila"><div class="campo"><label for="amin">Año desde</label><input id="amin" type="number" inputmode="numeric" placeholder={String(Math.min(...anios) || '')} /></div>
+        <div class="campo"><label for="amax">Año hasta</label><input id="amax" type="number" inputmode="numeric" placeholder={String(Math.max(...anios) || '')} /></div></div>
+        <div class="fila"><div class="campo"><label for="pmin">Precio desde</label><input id="pmin" type="number" inputmode="numeric" step="500000" placeholder="$" /></div>
+        <div class="campo"><label for="pmax">Precio hasta</label><input id="pmax" type="number" inputmode="numeric" step="500000" placeholder="$" /></div></div>
+        <div class="campo"><label for="kmax">Kilometraje máximo</label><input id="kmax" type="number" inputmode="numeric" step="5000" placeholder="km" /></div>
+        <div class="campo"><label for="trans">Transmisión</label><select id="trans"><option value="">Todas</option>{trans.map((m) => <option>{m}</option>)}</select></div>
+        <div class="campo"><label for="comb">Combustible</label><select id="comb"><option value="">Todos</option>{combs.map((m) => <option>{m}</option>)}</select></div>
+        <button class="btn btn-linea btn-block" type="reset" id="limpiar">Limpiar filtros</button>
+      </form>
+    </aside>
+    <div>
+      <div class="barra">
+        <button class="btn btn-linea filtros-toggle" id="ftoggle" aria-controls="filtros" aria-expanded="false">Filtros</button>
+        <span class="n" id="cuenta" aria-live="polite"></span>
+        <div><label class="sr-only" for="orden">Ordenar</label>
+          <select id="orden"><option value="dest">Destacados primero</option><option value="pmenor">Precio: menor a mayor</option><option value="pmayor">Precio: mayor a menor</option><option value="anio">Año: más nuevo</option><option value="km">Menor kilometraje</option></select></div>
+      </div>
+      <div class="grilla" id="lista">{lista.map((v) => <VehicleCard v={v} filtro />)}</div>
+      <div class="vacio" id="vacio"><h3>No encontramos vehículos con esos filtros</h3><p>Prueba ampliando el rango o <a href={u('/contacto/#cotiza')}>cuéntanos qué buscas</a> y te avisamos.</p></div>
+    </div>
+  </div></section>
+</Base>
+<script>
+  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const cards = [...document.querySelectorAll<HTMLElement>('#lista .card')];
+  const lista = $('lista');
+  const ids = ['q', 'marca', 'tipo', 'cond', 'amin', 'amax', 'pmin', 'pmax', 'kmax', 'trans', 'comb'];
+  const alias: Record<string, string> = { pmax: 'pmax' };
+  const params = new URLSearchParams(location.search);
+  ids.forEach((k) => { const v = params.get(k); if (v) ($(k) as HTMLInputElement).value = v; });
+  const num = (id: string) => { const v = parseFloat(($(id) as HTMLInputElement).value); return isNaN(v) ? null : v; };
+  const val = (id: string) => ($(id) as HTMLInputElement).value;
+  const ord: Record<string, (a: HTMLElement, b: HTMLElement) => number> = {
+    dest: (a, b) => +b.dataset.dest! - +a.dataset.dest! || +a.dataset.id! - +b.dataset.id!,
+    pmenor: (a, b) => +a.dataset.precio! - +b.dataset.precio!,
+    pmayor: (a, b) => +b.dataset.precio! - +a.dataset.precio!,
+    anio: (a, b) => +b.dataset.anio! - +a.dataset.anio!,
+    km: (a, b) => +a.dataset.km! - +b.dataset.km!,
+  };
+  function aplicar() {
+    const q = val('q').trim().toLowerCase(), amin = num('amin'), amax = num('amax'), pmin = num('pmin'), pmax = num('pmax'), kmax = num('kmax');
+    let n = 0;
+    cards.forEach((c) => {
+      const d = c.dataset;
+      const ok = (!q || d.q!.includes(q)) && (!val('marca') || d.marca === val('marca')) && (!val('tipo') || d.tipo === val('tipo'))
+        && (!val('cond') || d.cond === val('cond')) && (!val('trans') || d.trans === val('trans')) && (!val('comb') || d.comb === val('comb'))
+        && (amin === null || +d.anio! >= amin) && (amax === null || +d.anio! <= amax)
+        && (pmin === null || +d.precio! >= pmin) && (pmax === null || +d.precio! <= pmax) && (kmax === null || +d.km! <= kmax);
+      c.hidden = !ok; if (ok) n++;
+    });
+    [...cards].sort(ord[val('orden')]).forEach((c) => lista.appendChild(c));
+    $('cuenta').textContent = `${n} ${n === 1 ? 'vehículo' : 'vehículos'}`;
+    $('vacio').classList.toggle('visible', n === 0);
+    const p = new URLSearchParams();
+    ids.forEach((k) => { if (val(k)) p.set(k, val(k)); });
+    history.replaceState(null, '', p.toString() ? '?' + p : location.pathname);
+  }
+  $('f').addEventListener('input', aplicar);
+  $('orden').addEventListener('change', aplicar);
+  $('limpiar').addEventListener('click', () => setTimeout(aplicar));
+  $('ftoggle').addEventListener('click', () => { const o = $('filtros').classList.toggle('abierto'); $('ftoggle').setAttribute('aria-expanded', String(o)); });
+  aplicar();
+</script>

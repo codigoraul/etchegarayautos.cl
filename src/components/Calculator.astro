@@ -1,0 +1,32 @@
+---
+const { precio = 10000000, tasa = 1.6, pieMin = 20, plazos = [12, 24, 36, 48, 60], id = 'calc' } = Astro.props;
+---
+<div class="panel calc" data-calc data-tasa={tasa}>
+  <h2 style="font-size:1.6rem">Simula tu cuota</h2>
+  <div class="campo"><label for={`${id}-p`}>Precio del vehículo ($)</label><input id={`${id}-p`} data-p type="number" min="1000000" step="100000" value={precio} inputmode="numeric" /></div>
+  <div class="campo"><label for={`${id}-pie`}>Pie: <strong data-pie-l>{pieMin}%</strong></label>
+    <input id={`${id}-pie`} data-pie type="range" min={pieMin} max="70" step="5" value={pieMin} />
+    <div class="rango"><span>{pieMin}%</span><span>70%</span></div></div>
+  <div class="campo"><label for={`${id}-m`}>Plazo</label>
+    <select id={`${id}-m`} data-m>{plazos.map((p: number, i: number) => <option value={p} selected={i === plazos.length - 1}>{p} meses</option>)}</select></div>
+  <div class="lbl">Cuota mensual aproximada</div>
+  <output class="res" data-res aria-live="polite">—</output>
+  <p class="nota" data-det></p>
+  <p class="nota">Simulación referencial con tasa de {String(tasa).replace('.', ',')}% mensual. El crédito está sujeto a evaluación y condiciones de la financiera.</p>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-calc]').forEach((c) => {
+    const $ = (s: string) => c.querySelector<HTMLInputElement>(s)!;
+    const tasa = parseFloat(c.dataset.tasa || '1.6') / 100;
+    const fmt = (n: number) => '$' + Math.round(n).toLocaleString('es-CL');
+    const run = () => {
+      const precio = +$('[data-p]').value || 0, pie = +$('[data-pie]').value, n = +$('[data-m]').value;
+      $('[data-pie-l]').textContent = pie + '%';
+      const monto = precio * (1 - pie / 100);
+      const q = tasa ? monto * tasa / (1 - Math.pow(1 + tasa, -n)) : monto / n;
+      c.querySelector('[data-res]')!.textContent = precio ? fmt(q) : '—';
+      c.querySelector('[data-det]')!.textContent = precio ? `Pie ${fmt(precio * pie / 100)} · Crédito ${fmt(monto)} · ${n} cuotas` : '';
+    };
+    c.addEventListener('input', run); run();
+  });
+</script>

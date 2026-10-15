@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { getAjustes, getVehiculos } from '../lib/api';
+import { foto, u } from '../lib/format';
+const a = await getAjustes();
+const { vehiculos } = await getVehiculos();
+const f = vehiculos[0]?.galeria?.[0] ?? vehiculos[0]?.portada;
+const valores = [['shield', 'Transparencia', 'Información real de cada vehículo: año, kilometraje, estado y documentos.'], ['key', 'Trato directo', 'Hablas con personas, en el local o por WhatsApp, sin intermediarios.'], ['coin', 'Opciones a tu medida', 'Financiamiento y parte de pago para que el auto se ajuste a tu presupuesto.']];
+---
+<Base titulo="Quiénes somos" descripcion="Etchegaray Autos es una automotora de seminuevos y usados en Blanco Encalada 985, Temuco.">
+  <PageHead titulo="Quiénes somos" texto="Una automotora de seminuevos y usados en el centro de Temuco." />
+  <section class="seccion"><div class="wrap dos">
+    <div>
+      <span class="kicker">Etchegaray Autos</span><h2>Tu próximo auto, con información clara</h2>
+      <p class="lead">Seleccionamos vehículos seminuevos y usados y los publicamos con datos reales, para que compares con calma y decidas con confianza.</p>
+      <p>Te acompañamos en todo el proceso: desde elegir el vehículo y agendar un test drive, hasta revisar financiamiento, parte de pago y documentación.</p>
+      <p>Nos encuentras en {a.direccion}. También puedes escribirnos por WhatsApp o Instagram.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-rojo" href={u('/autos/')}>Ver vehículos</a><a class="btn btn-linea" href={u('/contacto/')}>Contacto</a></div>
+      {a.vendidos_total > 0 && <div class="cifras"><div><strong>{a.vendidos_total}+</strong><span>vehículos vendidos</span></div></div>}
+    </div>
+    <div class="imagen-redonda"><img src={foto(f, 'large')} alt="Vehículo de Etchegaray Autos" loading="lazy" /></div>
+  </div></section>
+  <section class="seccion gris"><div class="wrap">
+    <div class="cab"><div><span class="kicker">Nuestros valores</span><h2>Cómo trabajamos</h2></div></div>
+    <div class="beneficios">{valores.map(([ic, t, d]) => <div class="benef"><div class="ico"><Icon n={ic} /></div><h3>{t}</h3><p>{d}</p></div>)}</div>
+  </div></section>
+  <section class="seccion"><div class="wrap"><div class="banda"><div><h2>Visítanos en Temuco</h2><p>{a.direccion}</p></div><div class="acciones"><a class="btn btn-rojo btn-lg" href={u('/contacto/')}>Cómo llegar</a></div></div></div></section>
+</Base>
