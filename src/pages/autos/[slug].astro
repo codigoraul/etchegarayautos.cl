@@ -5,7 +5,7 @@ import QuoteForm from '../../components/QuoteForm.astro';
 import Calculator from '../../components/Calculator.astro';
 import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import { getVehiculos, getAjustes } from '../../lib/api';
-import { clp, km, precioFinal, enOferta, foto, waLink, u } from '../../lib/format';
+import { clp, km, precioFinal, enOferta, foto, waLink } from '../../lib/format';
 
 export async function getStaticPaths() {
   const { vehiculos } = await getVehiculos();
@@ -34,9 +34,9 @@ const jsonld = {
     itemCondition: v.condicion === 'Semi-nuevo' ? 'https://schema.org/NewCondition' : 'https://schema.org/UsedCondition', url: new URL(Astro.url.pathname, Astro.site).href },
 };
 ---
-<Base titulo={`${v.titulo} en Temuco`} descripcion={`${v.titulo}, ${km(v.kilometraje)}, ${v.transmision}, ${v.combustible}. ${clp(precioFinal(v))}. Cotiza o agenda un test drive en Etchegaray Autos.`} imagen={foto(fotos[0], 'large')} jsonld={jsonld}>
+<Base titulo={`${v.titulo} en Temuco`} tituloSeo={v.seo?.titulo || undefined} descripcion={v.seo?.descripcion || `${v.titulo}, ${km(v.kilometraje)}, ${v.transmision}, ${v.combustible}. ${clp(precioFinal(v))}. Cotiza o agenda un test drive en Etchegaray Autos.`} imagen={foto(fotos[0], 'large')} jsonld={jsonld}>
   <section class="seccion" style="padding-top:28px"><div class="wrap">
-    <div class="migas"><a href={u('/')}>Inicio</a> / <a href={u('/autos/')}>Vehículos</a> / {v.titulo}</div>
+    <div class="migas"><a href="/">Inicio</a> / <a href="/autos/">Vehículos</a> / {v.titulo}</div>
     <div class="ficha">
       <div>
         <div class="galeria" data-galeria>
@@ -82,7 +82,7 @@ const jsonld = {
     </div>
   </div></section>
 
-  {similares.length > 0 && <section class="seccion gris"><div class="wrap"><div class="cab"><h2>Vehículos similares</h2><a class="enlace-flecha" href={u('/autos/')}>Ver todos</a></div><div class="grilla swipe">{similares.map((s) => <VehicleCard v={s} />)}</div></div></section>}
+  {similares.length > 0 && <section class="seccion gris"><div class="wrap"><div class="cab"><h2>Vehículos similares</h2><a class="enlace-flecha" href="/autos/">Ver todos</a></div><div class="grilla swipe">{similares.map((s) => <VehicleCard v={s} />)}</div></div></section>}
 </Base>
 <script>
   const g = document.querySelector<HTMLElement>('[data-galeria]');
@@ -95,7 +95,12 @@ const jsonld = {
       if (!th.length) return;
       i = (n + th.length) % th.length; main.src = th[i].dataset.src!; main.removeAttribute('width'); main.removeAttribute('height');
       th.forEach((t, k) => t.setAttribute('aria-current', String(k === i)));
+      const tira = th[i].parentElement as HTMLElement;
+      tira.scrollTo({ left: th[i].offsetLeft - tira.clientWidth / 2 + th[i].clientWidth / 2, behavior: 'smooth' });
     };
+    let x0 = 0;
+    main.parentElement!.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    main.parentElement!.addEventListener('touchend', (e) => { const d = e.changedTouches[0].clientX - x0; if (Math.abs(d) > 40) show(i + (d < 0 ? 1 : -1)); }, { passive: true });
     th.forEach((t, k) => t.addEventListener('click', () => show(k)));
     g.querySelector('[data-prev]')?.addEventListener('click', () => show(i - 1));
     g.querySelector('[data-next]')?.addEventListener('click', () => show(i + 1));

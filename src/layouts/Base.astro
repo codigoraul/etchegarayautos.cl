@@ -4,19 +4,19 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 import { getAjustes, getVehiculos } from '../lib/api';
-import { waLink, u } from '../lib/format';
+import { waLink } from '../lib/format';
 
-interface Props { titulo?: string; descripcion?: string; imagen?: string; jsonld?: object | object[]; noindex?: boolean }
-const { titulo, descripcion = 'Autos seminuevos y usados en Temuco. Vehículos seleccionados, información clara y atención personalizada.', imagen, jsonld, noindex } = Astro.props;
+interface Props { titulo?: string; tituloSeo?: string; descripcion?: string; imagen?: string; jsonld?: object | object[]; noindex?: boolean }
+const { titulo, tituloSeo, descripcion = 'Autos seminuevos y usados en Temuco. Vehículos seleccionados, información clara y atención personalizada.', imagen, jsonld, noindex } = Astro.props;
 const a = await getAjustes();
 const { demo } = await getVehiculos();
-const full = titulo ? `${titulo} | Etchegaray Autos` : 'Etchegaray Autos | Autos seminuevos y usados en Temuco';
+const full = tituloSeo ? tituloSeo : titulo ? `${titulo} | Etchegaray Autos` : 'Etchegaray Autos | Autos seminuevos y usados en Temuco';
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const og = new URL(u(imagen || '/img/logo.png'), Astro.site).href;
+const og = new URL(imagen || '/img/logo.png', Astro.site).href;
 const wa = waLink(a, 'Hola, quiero consultar por un vehículo.');
 const negocio = {
   '@context': 'https://schema.org', '@type': 'AutoDealer', name: 'Etchegaray Autos', url: Astro.site?.href,
-  image: new URL(u('/img/logo.png'), Astro.site).href,
+  image: new URL('/img/logo.png', Astro.site).href,
   address: { '@type': 'PostalAddress', streetAddress: 'Blanco Encalada 985', addressLocality: 'Temuco', addressCountry: 'CL' },
   ...(a.telefono ? { telephone: a.telefono } : {}),
 };
@@ -32,7 +32,7 @@ const bloques = [negocio, ...(jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld
   <link rel="canonical" href={canonical} />
   {(noindex || demo) && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#D90000" />
-  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta property="og:type" content="website" /><meta property="og:locale" content="es_CL" />
   <meta property="og:title" content={full} /><meta property="og:description" content={descripcion} />
   <meta property="og:url" content={canonical} /><meta property="og:image" content={og} />

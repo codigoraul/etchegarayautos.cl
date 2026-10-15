@@ -2,6 +2,13 @@ import demo from '../data/demo.json';
 
 const API = (import.meta.env.WP_API || process.env.WP_API || 'https://etchegarayautos.cl/admin/wp-json/etchegaray/v1').replace(/\/$/, '');
 const USAR_DEMO = String(import.meta.env.USAR_DEMO_SI_VACIO ?? process.env.USAR_DEMO_SI_VACIO ?? 'true') !== 'false';
+// Solo para vista previa local: muestra los vehículos reales de WordPress y, después, los de ejemplo.
+const MEZCLAR_DEMO = String(import.meta.env.MEZCLAR_DEMO ?? process.env.MEZCLAR_DEMO ?? 'false') === 'true';
+const DEV = !!import.meta.env.DEV;
+
+const decode = (s: string) => (s || '').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
+  .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#039;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+const limpiar = (v: any): Vehiculo => ({ ...v, titulo: decode(v.titulo), version: decode(v.version), modelo: decode(v.modelo) });
 
 export type Foto = { url: string; large?: string; medium?: string; thumb?: string; width?: number; height?: number; alt?: string };
 export type Vehiculo = {
@@ -14,6 +21,7 @@ export type Vehiculo = {
   garantia: string; video_url: string; descripcion: string; descripcion_html?: string;
   equipamiento: string[]; extras: string[]; documentos: string[];
   portada: Foto | null; galeria: Foto[]; demo?: boolean;
+  seo?: { titulo: string; descripcion: string; frase_clave: string; relacionadas: string[]; og_titulo: string; og_descripcion: string };
 };
 export type Ajustes = {
   nombre: string; whatsapp: string; telefono: string; direccion: string; horario: { dia?: string; horas?: string }[] | string[];
@@ -33,17 +41,23 @@ const AJUSTES_BASE: Ajustes = {
 };
 
 async function get(path: string) {
-  const r = await fetch(API + path, { headers: { Accept: 'application/json' } });
+  // El parámetro evita que una caché del servidor entregue un catálogo antiguo al compilar.
+  const r = await fetch(`${API}${path}${path.includes('?') ? '&' : '?'}_=${Date.now()}`, { headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' } });
   if (!r.ok) throw new Error(`${path} → ${r.status}`);
   return r.json();
 }
 
 let cacheV: Promise<{ vehiculos: Vehiculo[]; demo: boolean }> | null = null;
 export function getVehiculos() {
+  if (DEV) cacheV = null;
   cacheV ??= (async () => {
     try {
       const d = await get('/catalogo');
-      const list: Vehiculo[] = d.vehiculos || [];
+      const list: Vehiculo[] = (d.vehiculos || []).map(limpiar);
+      if (list.length && MEZCLAR_DEMO) {
+        const ids = new Set(list.map((v) => v.slug));
+        return { vehiculos: [...list, ...(demo.vehiculos as unknown as Vehiculo[]).filter((v) => !ids.has(v.slug))], demo: true };
+      }
       if (list.length || !USAR_DEMO) return { vehiculos: list, demo: false };
     } catch (e) {
       console.warn('[api] catálogo no disponible:', (e as Error).message);
@@ -56,6 +70,7 @@ export function getVehiculos() {
 
 let cacheA: Promise<Ajustes> | null = null;
 export function getAjustes() {
+  if (DEV) cacheA = null;
   cacheA ??= (async () => {
     try {
       const a = await get('/ajustes');
