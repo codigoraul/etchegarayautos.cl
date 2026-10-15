@@ -43,6 +43,7 @@ const jsonld = {
           <div class="principal">
             <img data-main src={foto(fotos[0], 'large')} alt={fotos[0]?.alt || v.titulo} width={fotos[0]?.width} height={fotos[0]?.height} fetchpriority="high" />
             {fotos.length > 1 && <div class="nav-g"><button type="button" data-prev aria-label="Foto anterior">←</button><button type="button" data-next aria-label="Foto siguiente">→</button></div>}
+            <span class="contador" data-contador aria-live="polite">1 / {fotos.length}</span>
             <button type="button" class="zoom" data-zoom>Ampliar</button>
           </div>
           {fotos.length > 1 && <div class="miniaturas">{fotos.map((f, i) => <button type="button" data-i={i} data-src={foto(f, 'large')} aria-label={`Ver foto ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}><img src={foto(f, 'thumb')} alt="" loading="lazy" /></button>)}</div>}
@@ -95,6 +96,7 @@ const jsonld = {
       if (!th.length) return;
       i = (n + th.length) % th.length; main.src = th[i].dataset.src!; main.removeAttribute('width'); main.removeAttribute('height');
       th.forEach((t, k) => t.setAttribute('aria-current', String(k === i)));
+      const cnt = g.querySelector('[data-contador]'); if (cnt) cnt.textContent = `${i + 1} / ${th.length}`;
       const tira = th[i].parentElement as HTMLElement;
       tira.scrollTo({ left: th[i].offsetLeft - tira.clientWidth / 2 + th[i].clientWidth / 2, behavior: 'smooth' });
     };
