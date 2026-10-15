@@ -1,5 +1,8 @@
 ---
-const { wa = '' } = Astro.props as { fotos?: any[]; wa: string };
+import { clp, km, precioFinal, enOferta, foto } from '../lib/format';
+const { wa = '', destacado = null } = Astro.props as { fotos?: any[]; wa: string; destacado?: any };
+const fotoDest = destacado ? foto(destacado.portada || destacado.galeria?.[0], 'large') : '/hero/slide-1-auto.webp';
+const datos = destacado ? [destacado.anio, km(destacado.kilometraje), destacado.transmision].filter(Boolean).join(' · ') : '';
 // Imágenes fijas del slider (no dependen del catálogo). Para cambiarlas, reemplaza estos archivos en public/hero/.
 const FONDOS = ['/hero/hero-1.jpg', '/hero/hero-2.jpg', '/hero/hero-3.jpg'];
 const S = [
@@ -14,14 +17,30 @@ const S = [
 <section class="hero" aria-roledescription="carrusel" aria-label="Destacados" data-hero>
   <div class="slides">
     {S.map((s, i) => (
-      <div class="slide" role="group" aria-roledescription="diapositiva" aria-label={`${i + 1} de ${S.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
-        <img class="bg" src={FONDOS[i % FONDOS.length]} alt="" loading={i === 0 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} />
+      <div class={`slide${i === 0 ? ' con-foto' : ''}`} role="group" aria-roledescription="diapositiva" aria-label={`${i + 1} de ${S.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
+        <img class="bg" src={i === 0 ? '/hero/hero-1-bg.jpg' : FONDOS[i % FONDOS.length]} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
         <div class="wrap"><div class="contenido">
           <span class="etq">{s.etq}</span>
           {i === 0 ? <h1>{s.t}</h1> : <h2 class="h1">{s.t}</h2>}
           <p>{s.p}</p>
           <div class="acciones">{s.a.map(([t, h, c]) => <a class={`btn btn-lg ${c}`} href={h} target={h.startsWith('http') ? '_blank' : undefined} rel={h.startsWith('http') ? 'noopener' : undefined}>{t}</a>)}</div>
-        </div></div>
+        </div>
+        {i === 0 && (
+          <div class="slide-visual">
+            <figure class="slide-foto"><img src={fotoDest} alt={destacado ? `${destacado.titulo} en Etchegaray Autos Temuco` : 'Camioneta en Etchegaray Autos Temuco'} width="1400" height="1050" loading="eager" fetchpriority="high" />
+              {destacado && <span class="sello">{enOferta(destacado) ? 'Oferta' : destacado.condicion || 'Disponible'}</span>}
+            </figure>
+            {destacado && (
+              <a class="tarjeta-dest" href={`/autos/${destacado.slug}/`}>
+                <span class="td-etq">Vehículo destacado</span>
+                <strong class="td-tit">{destacado.titulo}</strong>
+                <span class="td-meta">{datos}</span>
+                <span class="td-pie"><span class="td-precio">{clp(precioFinal(destacado))}</span><span class="td-ver">Ver ficha →</span></span>
+              </a>
+            )}
+          </div>
+        )}
+        </div>
       </div>
     ))}
   </div>
