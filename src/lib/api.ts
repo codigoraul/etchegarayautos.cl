@@ -8,7 +8,8 @@ const DEV = !!import.meta.env.DEV;
 
 const decode = (s: string) => (s || '').replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n)).replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
   .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#039;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-const limpiar = (v: any): Vehiculo => ({ ...v, titulo: decode(v.titulo), version: decode(v.version), modelo: decode(v.modelo) });
+const txt = (x: any): string => (x && typeof x === 'object' ? x.nombre ?? '' : x ?? '');
+const limpiar = (v: any): Vehiculo => ({ ...v, titulo: decode(v.titulo), version: decode(v.version), modelo: decode(v.modelo), carroceria: decode(txt(v.carroceria)) });
 
 export type Foto = { url: string; large?: string; medium?: string; thumb?: string; width?: number; height?: number; alt?: string };
 export type Vehiculo = {
@@ -34,7 +35,7 @@ export type Ajustes = {
 
 const AJUSTES_BASE: Ajustes = {
   nombre: 'Etchegaray Autos', whatsapp: '', telefono: '', direccion: "Blanco Encalada 985, esquina O'Higgins, Temuco",
-  horario: [], instagram: 'https://www.instagram.com/etchegarayautos/', facebook: '', mapa_url: '',
+  horario: [], instagram: 'https://www.instagram.com/etchegarayautos/', facebook: '', mapa_url: 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A',
   beneficios: [], vendidos_total: 0, resenas: [], acepta_parte_pago: true, acepta_consignacion: true,
   financiamiento: { tasa_mensual: 1.6, pie_minimo: 20, plazos: [12, 24, 36, 48, 60], texto: '' },
   turnstile_site_key: '',

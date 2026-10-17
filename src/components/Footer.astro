@@ -3,12 +3,12 @@ import { u } from '../lib/format';
 import Icon from './Icon.astro';
 const { a } = Astro.props;
 const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typeof h === 'string' ? h : `${h.dia ?? ''} ${h.horas ?? ''}`.trim());
-const mapa = a.mapa_url || 'https://www.google.com/maps/search/?api=1&query=Blanco+Encalada+985,+Temuco';
+const mapa = a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A';
 ---
 <footer class="footer">
   <div class="wrap cols">
     <div>
-      <a class="logo" href={u('/')}><img src={u('/img/logo-sm.png')} alt="Etchegaray Autos" width="178" height="46" loading="lazy" /></a>
+      <a class="logo" href={u('/')}><img src={u('/img/logo-footer.png')} alt="Etchegaray Autos" width="210" height="56" loading="lazy" /></a>
       <p>Autos seminuevos y usados en Temuco. Vehículos seleccionados, información clara y atención personalizada.</p>
     </div>
     <div>

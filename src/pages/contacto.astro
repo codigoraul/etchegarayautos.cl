@@ -15,13 +15,14 @@ const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typ
     <div class="caja" id="cotiza"><h2 style="font-size:1.8rem">Escríbenos</h2><QuoteForm tipo="cotizacion" id="contacto" boton="Enviar mensaje" turnstile={a.turnstile_site_key} mensajePlaceholder="¿Qué vehículo te interesa o qué necesitas?" /></div>
     <div>
       <ul class="lista-ok" style="gap:16px">
-        <li><strong>Dirección:</strong> {a.direccion}</li>
+        <li><strong>Dirección:</strong> <a href={a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A'} target="_blank" rel="noopener">{a.direccion}</a></li>
         {horarios.map((h: string) => <li><strong>Horario:</strong> {h}</li>)}
         {a.telefono && <li><strong>Teléfono:</strong> <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></li>}
         <li><strong>Instagram:</strong> <a href={a.instagram} target="_blank" rel="noopener">@etchegarayautos</a></li>
       </ul>
       {wa && <p><a class="btn btn-wa" href={wa} target="_blank" rel="noopener">Escribir por WhatsApp</a></p>}
       <div style="height:340px"><iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Blanco+Encalada+985,+Temuco&output=embed"></iframe></div>
+      <p><a class="btn btn-linea" href={a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A'} target="_blank" rel="noopener">Abrir en Google Maps</a></p>
     </div>
   </div></section>
 </Base>
