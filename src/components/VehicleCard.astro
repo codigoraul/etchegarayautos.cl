@@ -3,6 +3,7 @@ import { clp, km, precioFinal, enOferta, foto, u } from '../lib/format';
 import type { Vehiculo } from '../lib/api';
 const { v, filtro = false, prioridad = false } = Astro.props as { v: Vehiculo; filtro?: boolean; prioridad?: boolean };
 const f = v.portada || v.galeria?.[0];
+const nombre = [v.marca?.nombre, v.modelo, v.version].filter(Boolean).join(' ') || v.titulo;
 const attrs = filtro ? {
   'data-marca': v.marca?.nombre ?? '', 'data-tipo': v.carroceria, 'data-cond': v.condicion, 'data-anio': v.anio,
   'data-precio': precioFinal(v), 'data-km': v.kilometraje, 'data-trans': v.transmision, 'data-comb': v.combustible,
@@ -21,8 +22,7 @@ const attrs = filtro ? {
     </div>
   </div>
   <div class="cuerpo">
-    <h3><a href={u(`/autos/${v.slug}/`)}>{v.titulo}</a></h3>
-    {v.version && <p class="sub">{v.marca?.nombre} {v.modelo} {v.version}</p>}
+    <h3><a href={u(`/autos/${v.slug}/`)}>{nombre}</a></h3>
     <div class="precio-fila">
       <span class="precio">{clp(precioFinal(v))}</span>
       {enOferta(v) && <span class="precio-ant">{clp(v.precio)}</span>}
