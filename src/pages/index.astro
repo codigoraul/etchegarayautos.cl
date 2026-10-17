@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import VehicleCard from '../components/VehicleCard.astro';
 import Icon from '../components/Icon.astro';
 import { getVehiculos, getAjustes } from '../lib/api';
-import { waLink, foto, slugify } from '../lib/format';
+import { waLink, foto, slugify, u } from '../lib/format';
 import resenasGoogle from '../data/resenas.json';
 
 const { vehiculos } = await getVehiculos();
@@ -51,7 +51,7 @@ const beneficios = [
 
   <section class={alt()}>
     <div class="wrap">
-      <div class="cab"><div><span class="kicker">Catálogo</span><h2>Vehículos destacados</h2><p>Una selección de lo último que llegó a nuestro local.</p></div><a class="enlace-flecha" href="/autos/">Ver todos los vehículos</a></div>
+      <div class="cab"><div><span class="kicker">Catálogo</span><h2>Vehículos destacados</h2><p>Una selección de lo último que llegó a nuestro local.</p></div><a class="enlace-flecha" href={u('/autos/')}>Ver todos los vehículos</a></div>
       <div class="grilla swipe">{destacados.map((v, i) => <VehicleCard v={v} prioridad={i < 3} />)}</div>
     </div>
   </section>
@@ -60,7 +60,7 @@ const beneficios = [
     <div class="wrap">
       <div class="cab"><div><span class="kicker">Categorías</span><h2>Busca por tipo de vehículo</h2></div></div>
       <div class="cats swipe">{cats.map((c) => (
-        <a class="cat" href={`/autos/?tipo=${encodeURIComponent(c.t)}`}>
+        <a class="cat" href={u(`/autos/?tipo=${encodeURIComponent(c.t)}`)}>
           <img src={foto(c.f, 'medium')} alt="" loading="lazy" />
           <div><strong>{c.t}</strong><span>{c.n} {c.n === 1 ? 'vehículo' : 'vehículos'}</span></div>
         </a>))}</div>
@@ -77,15 +77,15 @@ const beneficios = [
   <section class={alt()}>
     <div class="wrap"><div class="banda">
       <div><h2>¿Quieres vender tu auto?</h2><p>Cuéntanos qué vehículo tienes. Podemos venderlo por ti o recibirlo como parte de pago de tu próximo auto.</p></div>
-      <div class="acciones"><a class="btn btn-rojo btn-lg" href="/vende-tu-auto/">Vender o consignar</a><a class="btn btn-linea btn-lg" href="/financiamiento/">Simular cuota</a></div>
+      <div class="acciones"><a class="btn btn-rojo btn-lg" href={u('/vende-tu-auto/')}>Vender o consignar</a><a class="btn btn-linea btn-lg" href={u('/financiamiento/')}>Simular cuota</a></div>
     </div></div>
   </section>
 
   <section class={alt()}><div class="wrap">
     <div class="cab"><div><span class="kicker">Marcas</span><h2>Marcas con las que trabajamos</h2></div></div>
     <div class="marcas-fila">{marcasTrabajo.map((m) => {
-      const inner = <><span class="marca-logo">{m.logo ? <img src={`/marcas/${m.k}.svg`} alt={m.nombre} width="56" height="56" loading="lazy" /> : <b>{m.nombre}</b>}</span><span class="marca-nombre">{m.nombre}{m.n > 0 && <small> ({m.n})</small>}</span></>;
-      return m.n > 0 ? <a class="marca" href={`/autos/?marca=${encodeURIComponent(m.nombre)}`}>{inner}</a> : <div class="marca">{inner}</div>;
+      const inner = <><span class="marca-logo">{m.logo ? <img src={u(`/marcas/${m.k}.svg`)} alt={m.nombre} width="56" height="56" loading="lazy" /> : <b>{m.nombre}</b>}</span><span class="marca-nombre">{m.nombre}{m.n > 0 && <small> ({m.n})</small>}</span></>;
+      return m.n > 0 ? <a class="marca" href={u(`/autos/?marca=${encodeURIComponent(m.nombre)}`)}>{inner}</a> : <div class="marca">{inner}</div>;
     })}</div>
   </div></section>
 

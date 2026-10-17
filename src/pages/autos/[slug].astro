@@ -4,7 +4,7 @@ import VehicleCard from '../../components/VehicleCard.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
 import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import { getVehiculos, getAjustes } from '../../lib/api';
-import { clp, km, precioFinal, enOferta, foto, waLink } from '../../lib/format';
+import { clp, km, precioFinal, enOferta, foto, waLink, u } from '../../lib/format';
 
 export async function getStaticPaths() {
   const { vehiculos } = await getVehiculos();
@@ -35,7 +35,7 @@ const jsonld = {
 ---
 <Base titulo={`${v.titulo} en Temuco`} tituloSeo={v.seo?.titulo || undefined} descripcion={v.seo?.descripcion || `${v.titulo}, ${km(v.kilometraje)}, ${v.transmision}, ${v.combustible}. ${clp(precioFinal(v))}. Cotiza o agenda un test drive en Etchegaray Autos.`} imagen={foto(fotos[0], 'large')} jsonld={jsonld}>
   <section class="seccion" style="padding-top:28px"><div class="wrap">
-    <div class="migas"><a href="/">Inicio</a> / <a href="/autos/">Vehículos</a> / {v.titulo}</div>
+    <div class="migas"><a href={u('/')}>Inicio</a> / <a href={u('/autos/')}>Vehículos</a> / {v.titulo}</div>
     <div class="ficha">
       <div>
         <div class="galeria" data-galeria>
@@ -76,7 +76,7 @@ const jsonld = {
     </div>
   </div></section>
 
-  {similares.length > 0 && <section class="seccion gris"><div class="wrap"><div class="cab"><h2>Vehículos similares</h2><a class="enlace-flecha" href="/autos/">Ver todos</a></div><div class="grilla swipe">{similares.map((s) => <VehicleCard v={s} />)}</div></div></section>}
+  {similares.length > 0 && <section class="seccion gris"><div class="wrap"><div class="cab"><h2>Vehículos similares</h2><a class="enlace-flecha" href={u('/autos/')}>Ver todos</a></div><div class="grilla swipe">{similares.map((s) => <VehicleCard v={s} />)}</div></div></section>}
 </Base>
 <script>
   const g = document.querySelector<HTMLElement>('[data-galeria]');

@@ -1,10 +1,10 @@
 ---
-import { clp, km, precioFinal, enOferta, foto } from '../lib/format';
+import { clp, km, precioFinal, enOferta, foto, u } from '../lib/format';
 const { wa = '', destacado = null } = Astro.props as { fotos?: any[]; wa: string; destacado?: any };
-const fotoDest = destacado ? foto(destacado.portada || destacado.galeria?.[0], 'large') : '/hero/slide-1-auto.webp';
+const fotoDest = destacado ? foto(destacado.portada || destacado.galeria?.[0], 'large') : u('/hero/slide-1-auto.webp');
 const datos = destacado ? [destacado.anio, km(destacado.kilometraje), destacado.transmision].filter(Boolean).join(' · ') : '';
 // Imágenes fijas del slider (no dependen del catálogo). Para cambiarlas, reemplaza estos archivos en public/hero/.
-const FONDOS = ['/hero/hero-1.jpg', '/hero/hero-2.jpg', '/hero/hero-3.jpg'];
+const FONDOS = ['/hero/hero-1.jpg', '/hero/hero-2.jpg', '/hero/hero-3.jpg'].map((x) => u(x));
 const S = [
   { etq: 'Seminuevos y usados', t: 'Tu próximo auto.', p: 'Vehículos seleccionados, información clara y atención personalizada en Temuco.',
     a: [['Ver vehículos', '/autos/', 'btn-rojo'], ['Cotizar', '/contacto/#cotiza', 'btn-linea']] },
@@ -18,12 +18,12 @@ const S = [
   <div class="slides">
     {S.map((s, i) => (
       <div class={`slide${i === 0 ? ' con-foto' : ''}`} role="group" aria-roledescription="diapositiva" aria-label={`${i + 1} de ${S.length}`} aria-hidden={i === 0 ? 'false' : 'true'}>
-        <img class="bg" src={i === 0 ? '/hero/hero-1-bg.jpg' : FONDOS[i % FONDOS.length]} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
+        <img class="bg" src={i === 0 ? u('/hero/hero-1-bg.jpg') : FONDOS[i % FONDOS.length]} alt="" loading={i === 0 ? 'eager' : 'lazy'} />
         <div class="wrap"><div class="contenido">
           <span class="etq">{s.etq}</span>
           {i === 0 ? <h1>{s.t}</h1> : <h2 class="h1">{s.t}</h2>}
           <p>{s.p}</p>
-          <div class="acciones">{s.a.map(([t, h, c]) => <a class={`btn btn-lg ${c}`} href={h} target={h.startsWith('http') ? '_blank' : undefined} rel={h.startsWith('http') ? 'noopener' : undefined}>{t}</a>)}</div>
+          <div class="acciones">{s.a.map(([t, h, c]) => <a class={`btn btn-lg ${c}`} href={h.startsWith('http') ? h : u(h)} target={h.startsWith('http') ? '_blank' : undefined} rel={h.startsWith('http') ? 'noopener' : undefined}>{t}</a>)}</div>
         </div>
         {i === 0 && (
           <div class="slide-visual">
@@ -31,7 +31,7 @@ const S = [
               {destacado && <span class="sello">{enOferta(destacado) ? 'Oferta' : destacado.condicion || 'Disponible'}</span>}
             </figure>
             {destacado && (
-              <a class="tarjeta-dest" href={`/autos/${destacado.slug}/`}>
+              <a class="tarjeta-dest" href={u(`/autos/${destacado.slug}/`)}>
                 <span class="td-etq">Vehículo destacado</span>
                 <strong class="td-tit">{destacado.titulo}</strong>
                 <span class="td-meta">{datos}</span>

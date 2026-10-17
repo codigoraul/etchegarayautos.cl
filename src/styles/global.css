@@ -222,7 +222,10 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(46,50,56,.2);bord
 .imagen-redonda img{width:100%;height:100%;object-fit:cover}
 
 /* Reseñas */
-.resenas{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.resenas{display:grid;grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:min(330px,82%);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:2px;padding:2px 2px 14px;scrollbar-width:thin;scrollbar-color:#c5c9d0 transparent;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.resenas>*{scroll-snap-align:start}
+.resenas .resena{display:flex;flex-direction:column;height:100%}
+.resenas .resena p{flex:1}
 .resena{background:#fff;border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px}
 .estrellas{color:#b86e00;letter-spacing:2px;font-size:1.1rem}
 .resena p{margin:10px 0 12px}.resena strong{font-size:.95rem}

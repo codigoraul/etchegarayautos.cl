@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 import { getAjustes, getVehiculos } from '../lib/api';
-import { waLink } from '../lib/format';
+import { waLink, u } from '../lib/format';
 
 interface Props { titulo?: string; tituloSeo?: string; descripcion?: string; imagen?: string; jsonld?: object | object[]; noindex?: boolean }
 const { titulo, tituloSeo, descripcion = 'Autos seminuevos y usados en Temuco. Vehículos seleccionados, información clara y atención personalizada.', imagen, jsonld, noindex } = Astro.props;
@@ -32,7 +32,9 @@ const bloques = [negocio, ...(jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld
   <link rel="canonical" href={canonical} />
   {(noindex || demo) && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#D90000" />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+  <link rel="icon" href={u('/favicon.ico')} sizes="48x48" />
+  <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
   <meta property="og:type" content="website" /><meta property="og:locale" content="es_CL" />
   <meta property="og:title" content={full} /><meta property="og:description" content={descripcion} />
   <meta property="og:url" content={canonical} /><meta property="og:image" content={og} />
