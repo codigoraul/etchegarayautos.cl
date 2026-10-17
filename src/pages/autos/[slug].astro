@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import VehicleCard from '../../components/VehicleCard.astro';
 import QuoteForm from '../../components/QuoteForm.astro';
-import Calculator from '../../components/Calculator.astro';
 import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import { getVehiculos, getAjustes } from '../../lib/api';
 import { clp, km, precioFinal, enOferta, foto, waLink } from '../../lib/format';
@@ -78,7 +77,6 @@ const jsonld = {
           <div data-panel="cot"><QuoteForm tipo="cotizacion" vehiculoId={v.id} vehiculo={v.titulo} boton="Solicitar cotización" turnstile={a.turnstile_site_key} /></div>
           <div data-panel="td" hidden><QuoteForm tipo="test_drive" vehiculoId={v.id} vehiculo={v.titulo} boton="Agendar test drive" turnstile="" /></div>
         </div>
-        <Calculator id="ficha" precio={precioFinal(v)} tasa={a.financiamiento.tasa_mensual ?? 1.6} pieMin={a.financiamiento.pie_minimo ?? 20} plazos={a.financiamiento.plazos} />
       </aside>
     </div>
   </div></section>
