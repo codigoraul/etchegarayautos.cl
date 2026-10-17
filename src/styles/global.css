@@ -227,6 +227,16 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(46,50,56,.2);bord
 .estrellas{color:#b86e00;letter-spacing:2px;font-size:1.1rem}
 .resena p{margin:10px 0 12px}.resena strong{font-size:.95rem}
 
+/* Marcas */
+.marcas-fila{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px}
+.marca{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--borde);border-radius:var(--r-lg);color:var(--carbon);text-align:center;transition:border-color .15s,transform .15s}
+a.marca:hover{border-color:var(--rojo-accion);transform:translateY(-2px)}
+.seccion.gris .marca{border-color:transparent}
+.marca-logo{height:56px;display:flex;align-items:center;justify-content:center}
+.marca-logo img{height:56px;width:auto;max-width:96px;opacity:.82}
+.marca-logo b{font:600 1.1rem var(--f-tit)}
+.marca-nombre{font-size:.9rem;font-weight:600}.marca-nombre small{color:var(--gris);font-weight:500}
+
 /* Catálogo */
 .catalogo{display:grid;grid-template-columns:290px 1fr;gap:28px;align-items:start}
 .filtros{background:#fff;border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px 22px 22px;position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto;scrollbar-width:thin;scrollbar-color:#cfd2d8 transparent}
@@ -337,3 +347,15 @@ dialog.visor button{position:fixed;top:16px;right:16px;width:48px;height:48px;bo
   .banda{padding:32px 24px}
 }
 .seccion.gris .card,.seccion.gris .benef,.seccion.gris .resena{border-color:transparent}
+
+/* Hero: foto a alto completo (sin espacio arriba/abajo), pegada al borde derecho */
+@media(min-width:961px){
+  .slide.con-foto .wrap{position:static;display:block}
+  .slide.con-foto .contenido{position:relative;z-index:3}
+  .slide.con-foto .slide-visual{position:absolute;z-index:2;top:0;right:0;bottom:0;width:58%;padding:0;transform:none}
+  .slide.con-foto .slide-foto{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;box-shadow:none;height:100%}
+  .slide.con-foto .slide-foto img{object-position:50% 58%}
+  .slide.con-foto .slide-foto::after{border-radius:0;box-shadow:none;background:linear-gradient(90deg,rgba(46,50,56,.95) 0%,rgba(46,50,56,.55) 22%,rgba(46,50,56,0) 55%)}
+  .slide.con-foto .slide-foto .sello{left:auto;right:28px;top:28px;z-index:2}
+  .slide.con-foto .tarjeta-dest{left:48px;bottom:150px;z-index:3}
+}

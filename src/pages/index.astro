@@ -5,6 +5,7 @@ import VehicleCard from '../components/VehicleCard.astro';
 import Icon from '../components/Icon.astro';
 import { getVehiculos, getAjustes } from '../lib/api';
 import { waLink, foto, slugify } from '../lib/format';
+import resenasGoogle from '../data/resenas.json';
 
 const { vehiculos } = await getVehiculos();
 const a = await getAjustes();
@@ -18,6 +19,13 @@ const cats = tipos.map((t) => {
   return { t, n: lista.length, f: lista[0].portada || lista[0].galeria?.[0] };
 });
 const wa = waLink(a, 'Hola, quiero cotizar un vehículo.');
+const resenas = a.resenas.length ? a.resenas : resenasGoogle;
+const URL_RESENAS = 'https://maps.app.goo.gl/9YAerzdQYCPEvqBK9';
+const norm = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+const logosMarca = ['toyota', 'chevrolet', 'mazda', 'citroen', 'mitsubishi', 'kia'];
+const mapaMarcas = new Map<string, string>();
+['Toyota', 'Chevrolet', 'Mazda', 'Citroën', 'Mitsubishi', 'Kia', ...marcas].forEach((n) => { if (!mapaMarcas.has(norm(n))) mapaMarcas.set(norm(n), n); });
+const marcasTrabajo = [...mapaMarcas].map(([k, nombre]) => ({ k, nombre, n: disp.filter((v) => norm(v.marca?.nombre || '') === k).length, logo: logosMarca.includes(k) }));
 let k = 0;
 const alt = () => (k++ % 2 ? 'seccion gris' : 'seccion');
 const beneficios = [
@@ -73,34 +81,17 @@ const beneficios = [
     </div></div>
   </section>
 
-  {a.resenas.length > 0 && (
-    <section class={alt()}><div class="wrap">
-      <div class="cab"><div><span class="kicker">Clientes</span><h2>Lo que dicen de nosotros</h2></div></div>
-      <div class="resenas swipe">{a.resenas.map((r) => <figure class="resena" style="margin:0"><div class="estrellas" aria-label={`${r.estrellas} de 5`}>{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</div><p>{r.texto}</p><strong>{r.nombre}</strong></figure>)}</div>
-    </div></section>
-  )}
+  <section class={alt()}><div class="wrap">
+    <div class="cab"><div><span class="kicker">Marcas</span><h2>Marcas con las que trabajamos</h2></div></div>
+    <div class="marcas-fila">{marcasTrabajo.map((m) => {
+      const inner = <><span class="marca-logo">{m.logo ? <img src={`/marcas/${m.k}.svg`} alt={m.nombre} width="56" height="56" loading="lazy" /> : <b>{m.nombre}</b>}</span><span class="marca-nombre">{m.nombre}{m.n > 0 && <small> ({m.n})</small>}</span></>;
+      return m.n > 0 ? <a class="marca" href={`/autos/?marca=${encodeURIComponent(m.nombre)}`}>{inner}</a> : <div class="marca">{inner}</div>;
+    })}</div>
+  </div></section>
 
-  <section class={alt()}>
-    <div class="wrap dos">
-      <div>
-        <span class="kicker">Quiénes somos</span>
-        <h2>Una automotora cercana, en el centro de Temuco</h2>
-        <p class="lead">Somos Etchegaray Autos: seminuevos y usados con información clara y trato directo, sin letra chica.</p>
-        <ul class="lista-ok"><li>Atención personalizada, presencial y por WhatsApp</li><li>Test drive sin compromiso</li><li>Opciones de financiamiento y parte de pago</li></ul>
-        <a class="btn btn-linea" href="/nosotros/">Conócenos</a>
-      </div>
-      <div class="imagen-redonda"><img src={foto(heroFotos[1] ?? heroFotos[0], 'large')} alt="Vehículo del catálogo de Etchegaray Autos" loading="lazy" /></div>
-    </div>
-  </section>
-
-  <section class={alt()}>
-    <div class="wrap dos">
-      <div>
-        <span class="kicker">Visítanos</span><h2>Estamos en Temuco</h2>
-        <p class="lead">{a.direccion}</p>
-        <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-rojo" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Blanco+Encalada+985,+Temuco">Cómo llegar</a><a class="btn btn-linea" href="/contacto/">Contacto</a></div>
-      </div>
-      <iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Blanco+Encalada+985,+Temuco&output=embed"></iframe>
-    </div>
-  </section>
+  <section class={alt()}><div class="wrap">
+    <div class="cab"><div><span class="kicker">Clientes</span><h2>Lo que dicen de nosotros</h2></div></div>
+    <div class="resenas swipe">{resenas.map((r) => <figure class="resena" style="margin:0"><div class="estrellas" aria-label={`${r.estrellas} de 5`}>{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</div><p>{r.texto}</p><strong>{r.nombre}</strong></figure>)}</div>
+    <p style="margin:24px 0 0"><a class="btn btn-linea" href={URL_RESENAS} target="_blank" rel="noopener">Ver todas las opiniones en Google</a></p>
+  </div></section>
 </Base>

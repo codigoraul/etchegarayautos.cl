@@ -70,12 +70,7 @@ const jsonld = {
           </div>
         </div>
         <div class="panel" id="cotizar">
-          <div class="pestanas" role="tablist">
-            <button role="tab" aria-selected="true" data-tab="cot">Cotizar</button>
-            <button role="tab" aria-selected="false" data-tab="td">Test drive</button>
-          </div>
-          <div data-panel="cot"><QuoteForm tipo="cotizacion" vehiculoId={v.id} vehiculo={v.titulo} boton="Solicitar cotización" turnstile={a.turnstile_site_key} /></div>
-          <div data-panel="td" hidden><QuoteForm tipo="test_drive" vehiculoId={v.id} vehiculo={v.titulo} boton="Agendar test drive" turnstile="" /></div>
+          <QuoteForm tipo="cotizacion" vehiculoId={v.id} vehiculo={v.titulo} boton="Solicitar cotización" turnstile={a.turnstile_site_key} />
         </div>
       </aside>
     </div>
@@ -109,8 +104,4 @@ const jsonld = {
     visor.addEventListener('click', (e) => { if (e.target === visor) visor.close(); });
     document.addEventListener('keydown', (e) => { if (visor.open || (e.target as HTMLElement).closest('input,textarea,select')) return; if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1); });
   }
-  document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) => b.addEventListener('click', () => {
-    document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
-    document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => (p.hidden = p.dataset.panel !== b.dataset.tab));
-  }));
 </script>
