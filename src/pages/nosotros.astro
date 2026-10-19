@@ -2,11 +2,9 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Icon from '../components/Icon.astro';
-import { getAjustes, getVehiculos } from '../lib/api';
-import { foto, u } from '../lib/format';
+import { getAjustes } from '../lib/api';
+import { u } from '../lib/format';
 const a = await getAjustes();
-const { vehiculos } = await getVehiculos();
-const f = vehiculos[0]?.galeria?.[0] ?? vehiculos[0]?.portada;
 const valores = [['shield', 'Transparencia', 'Información real de cada vehículo: año, kilometraje, estado y documentos.'], ['key', 'Trato directo', 'Hablas con personas, en el local o por WhatsApp, sin intermediarios.'], ['coin', 'Opciones a tu medida', 'Financiamiento y parte de pago para que el auto se ajuste a tu presupuesto.']];
 ---
 <Base titulo="Quiénes somos" descripcion="Etchegaray Autos es una automotora de seminuevos y usados en Blanco Encalada 985, Temuco.">
@@ -20,7 +18,7 @@ const valores = [['shield', 'Transparencia', 'Información real de cada vehícul
       <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-rojo" href={u('/autos/')}>Ver vehículos</a><a class="btn btn-linea" href={u('/contacto/')}>Contacto</a></div>
       {a.vendidos_total > 0 && <div class="cifras"><div><strong>{a.vendidos_total}+</strong><span>vehículos vendidos</span></div></div>}
     </div>
-    <div class="imagen-redonda"><img src={foto(f, 'large')} alt="Vehículo de Etchegaray Autos" loading="lazy" /></div>
+    <div class="imagen-redonda"><img src={u('/nosotros/local-etchegaray-autos-temuco.webp')} alt="Camionetas Chevrolet Silverado, Mazda BT-50 y Toyota Hilux frente al letrero de Etchegaray Autos en Temuco" width="1100" height="825" loading="lazy" /></div>
   </div></section>
   <section class="seccion gris"><div class="wrap">
     <div class="cab"><div><span class="kicker">Nuestros valores</span><h2>Cómo trabajamos</h2></div></div>
