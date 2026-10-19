@@ -5,7 +5,7 @@ const { a } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
   ['/', 'Inicio'], ['/autos/', 'Vehículos'], ['/financiamiento/', 'Financiamiento'],
-  ['/vende-tu-auto/', 'Vende tu auto'], ['/nosotros/', 'Quiénes somos'], ['/contacto/', 'Contacto'],
+  ['/parte-de-pago/', 'Parte de pago'], ['/nosotros/', 'Quiénes somos'], ['/contacto/', 'Contacto'],
 ];
 const act = (h: string) => h === '/' ? path === u('/') : path.startsWith(u(h));
 const horario = Array.isArray(a.horario) && a.horario.length ? a.horario[0] : null;

@@ -22,8 +22,7 @@ const uid = id || `f-${tipo}-${vehiculoId || 'g'}`;
   )}
   {tipo === 'consignacion' && (
     <>
-      <div class="campo"><label for={`${uid}-m`}>¿Qué quieres hacer?</label>
-        <select id={`${uid}-m`} name="modalidad"><option>Vender</option><option>Consignar</option></select></div>
+      <input type="hidden" name="modalidad" value="Parte de pago" />
       <div class="fila">
         <div class="campo"><label for={`${uid}-ma`}>Marca</label><input id={`${uid}-ma`} name="auto_marca" type="text" /></div>
         <div class="campo"><label for={`${uid}-mo`}>Modelo</label><input id={`${uid}-mo`} name="auto_modelo" type="text" /></div>

@@ -31,7 +31,7 @@ const alt = () => (k++ % 2 ? 'seccion gris' : 'seccion');
 const beneficios = [
   ['shield', 'Vehículos seleccionados', 'Cada auto se publica con su información real: año, kilometraje, estado y documentos.'],
   ['doc', 'Documentación clara', 'Te mostramos la documentación del vehículo antes de decidir.'],
-  ['coin', 'Financiamiento', 'Te ayudamos a evaluar pie y cuotas según tu presupuesto.'],
+  ['coin', 'Financiamiento', 'Trabajamos con distintas financieras y buscamos la alternativa que mejor se adapte a ti.'],
   ['swap', 'Parte de pago', 'Consulta por recibir tu auto actual como parte de pago.'],
   ['key', 'Test drive', 'Agenda una prueba de manejo en nuestro local de Temuco.'],
 ];
@@ -76,8 +76,8 @@ const beneficios = [
 
   <section class={alt()}>
     <div class="wrap"><div class="banda">
-      <div><h2>¿Quieres vender tu auto?</h2><p>Cuéntanos qué vehículo tienes. Podemos venderlo por ti o recibirlo como parte de pago de tu próximo auto.</p></div>
-      <div class="acciones"><a class="btn btn-rojo btn-lg" href={u('/vende-tu-auto/')}>Vender o consignar</a><a class="btn btn-linea btn-lg" href={u('/financiamiento/')}>Simular cuota</a></div>
+      <div><h2>¿Tienes un auto para dar en parte de pago?</h2><p>Cuéntanos qué vehículo tienes y lo evaluamos como parte de pago de tu próximo auto.</p></div>
+      <div class="acciones"><a class="btn btn-rojo btn-lg" href={u('/parte-de-pago/')}>Parte de pago</a><a class="btn btn-linea btn-lg" href={u('/financiamiento/')}>Ver financiamiento</a></div>
     </div></div>
   </section>
 

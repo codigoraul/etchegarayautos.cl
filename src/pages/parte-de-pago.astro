@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { getAjustes } from '../lib/api';
+const a = await getAjustes();
+const pasos = [['Cuéntanos de tu auto', 'Completa el formulario con marca, modelo, año y kilometraje.'], ['Te contactamos', 'Te escribimos o llamamos para coordinar la evaluación de tu vehículo.'], ['Definimos el pie', 'Si tu auto es aceptado, lo consideramos como parte de pago de tu próximo vehículo.']];
+---
+<Base titulo="Tu auto como parte de pago en Temuco" descripcion="Recibimos tu auto como parte de pago de tu próximo vehículo en Etchegaray Autos, Temuco. Cuéntanos los datos de tu auto y te contactamos.">
+  <PageHead titulo="Tu auto como parte de pago" texto="Recibimos tu vehículo como parte de pago de tu próximo auto." />
+  <section class="seccion" id="como"><div class="wrap dos" style="align-items:start">
+    <div>
+      <span class="kicker">Cómo funciona</span><h2>Tres pasos simples</h2>
+      <ol class="lista-ok" style="counter-reset:p">{pasos.map(([t, d]) => <li><strong>{t}.</strong> {d}</li>)}</ol>
+      <ul class="lista-ok"><li>Atención personalizada en nuestro local de Temuco</li><li>Sin compromiso: tú decides</li></ul>
+    </div>
+    <div class="caja"><h2 style="font-size:1.8rem">Datos de tu vehículo</h2><QuoteForm tipo="consignacion" id="vende" boton="Enviar datos de mi auto" turnstile={a.turnstile_site_key} mensajePlaceholder="Estado, mantenciones, y el auto que te interesa…" /></div>
+  </div></section>
+</Base>

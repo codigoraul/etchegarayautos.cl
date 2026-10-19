@@ -1,22 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
-import Calculator from '../components/Calculator.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import { getAjustes } from '../lib/api';
 const a = await getAjustes();
-const f = a.financiamiento;
 ---
-<Base titulo="Financiamiento de autos en Temuco" descripcion="Simula la cuota de tu próximo auto y consulta opciones de financiamiento y parte de pago en Etchegaray Autos.">
-  <PageHead titulo="Financiamiento" texto="Elige tu pie y el plazo, y mira una cuota aproximada. Después te ayudamos a evaluar la mejor opción." />
+<Base titulo="Financiamiento de autos en Temuco" descripcion="Te evaluamos y buscamos la mejor alternativa de financiamiento para tu próximo auto, con distintas financieras, en Etchegaray Autos Temuco.">
+  <PageHead titulo="Financiamiento" texto="Te evaluamos y buscamos la alternativa que mejor se adapte a ti." />
   <section class="seccion"><div class="wrap dos" style="align-items:start">
-    <Calculator id="fin" tasa={f.tasa_mensual ?? 1.6} pieMin={f.pie_minimo ?? 20} plazos={f.plazos} />
     <div>
       <span class="kicker">Cómo funciona</span>
-      <h2>Compra con un plan claro</h2>
-      {f.texto ? <p class="lead">{f.texto}</p> : <p class="lead">Te ayudamos a revisar pie, plazo y cuota antes de decidir, para que elijas con tranquilidad.</p>}
-      <ul class="lista-ok"><li>Pie desde {f.pie_minimo ?? 20}% del valor del vehículo</li><li>Plazos de {f.plazos[0]} a {f.plazos[f.plazos.length - 1]} meses</li>{a.acepta_parte_pago && <li>Recibimos tu auto actual como parte de pago</li>}<li>Evaluación sujeta a aprobación de la financiera</li></ul>
-      <div class="caja" id="cotiza"><h3>Cotiza con financiamiento</h3><QuoteForm tipo="cotizacion" id="fin-form" boton="Quiero que me contacten" turnstile={a.turnstile_site_key} /></div>
+      <h2>Financia tu próximo vehículo</h2>
+      <p class="lead">Trabajamos con distintas financieras para revisar opciones de financiamiento según tu perfil y tus necesidades.</p>
+      <ul class="lista-ok"><li>Evaluamos tu caso y buscamos la mejor alternativa</li><li>Comparamos opciones entre distintas financieras</li><li>También puedes considerar tu auto actual como parte de pago</li><li>Evaluación sujeta a aprobación de la financiera</li></ul>
     </div>
+    <div class="caja" id="cotiza"><h3>Cotiza con financiamiento</h3><QuoteForm tipo="cotizacion" id="fin-form" boton="Quiero que me contacten" turnstile={a.turnstile_site_key} /></div>
   </div></section>
 </Base>
