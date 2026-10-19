@@ -11,6 +11,8 @@ const { vehiculos } = await getVehiculos();
 const a = await getAjustes();
 const disp = vehiculos.filter((v) => v.estado_venta !== 'Vendido');
 const destacados = (disp.filter((v) => v.destacado).concat(disp.filter((v) => !v.destacado))).slice(0, 6);
+// Vehículo que se muestra con cartel en el 2.º slide del hero (por su enlace /autos/<slug>/)
+const SLUG_SLIDE2 = 'mazda-bt-50-2-2-turbo-4x4-2026';
 const heroFotos = destacados.map((v) => v.portada || v.galeria?.[0]).filter(Boolean).slice(0, 3);
 const marcas = [...new Set(disp.map((v) => v.marca?.nombre).filter(Boolean))].sort() as string[];
 const tipos = [...new Set(disp.map((v) => v.carroceria).filter(Boolean))].sort();
@@ -37,7 +39,7 @@ const beneficios = [
 ];
 ---
 <Base>
-  <Hero fotos={heroFotos} wa={wa} destacado={destacados[0] ?? null} />
+  <Hero fotos={heroFotos} wa={wa} destacado={destacados[0] ?? null} slideVeh={disp.find((v) => v.slug === SLUG_SLIDE2) ?? null} />
 
   <section class="buscador" aria-label="Buscar vehículo"><div class="wrap">
     <form action="/autos/" method="get">

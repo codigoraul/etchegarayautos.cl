@@ -362,3 +362,25 @@ dialog.visor button{position:fixed;top:16px;right:16px;width:48px;height:48px;bo
   .slide.con-foto .slide-foto .sello{left:auto;right:28px;top:28px;z-index:2}
   .slide.con-foto .tarjeta-dest{left:48px;bottom:150px;z-index:3}
 }
+
+/* Slide con camioneta recortada: el piso llega hasta el borde inferior del slide */
+.slide.con-foto{align-items:stretch}
+.slide.con-foto .wrap{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);padding:0;align-items:end}
+.slide.con-foto .contenido{position:relative;z-index:2;align-self:center;padding:110px 0 150px}
+.slide-recorte{position:relative;z-index:1;padding:0 0 64px;transform:none;display:flex;align-items:flex-end;justify-content:center;align-self:end}
+.slide-recorte img{flex:none;width:min(806px,50vw);max-width:none;height:auto;display:block;filter:drop-shadow(0 28px 36px rgba(0,0,0,.45))}
+@media(max-width:860px){.slide.con-foto .wrap{grid-template-columns:1fr}.slide.con-foto .contenido{padding:56px 0 24px}.slide-recorte img{width:min(100vw,540px)}}
+.slide.con-foto .slide-recorte .cartel-veh{position:absolute;left:5%;top:auto;bottom:82px;z-index:3;display:grid;gap:4px;color:#fff;text-decoration:none;text-shadow:0 1px 10px rgba(0,0,0,.55)}
+.cartel-veh .cv-etq{font:600 .64rem var(--f-txt);letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.cartel-veh .cv-linea{display:inline-flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.45);font-size:.95rem}
+.cartel-veh strong{font-weight:500}
+.cartel-veh .cv-precio{color:rgba(255,255,255,.85)}
+.cartel-veh .cv-flecha{transition:transform .2s}
+.cartel-veh:hover .cv-linea{border-bottom-color:#fff}
+.cartel-veh:hover .cv-flecha{transform:translateX(4px)}
+@media(max-width:860px){.slide-recorte{flex-direction:column;align-items:center}.slide.con-foto .slide-recorte .cartel-veh{position:relative;left:auto;bottom:auto;margin-top:-28px;width:min(92%,340px)}}
+.slide.con-foto .slide-recorte{padding:0 0 84px;display:flex;align-items:flex-end;justify-content:center;order:0}
+@media(max-width:860px){.slide.con-foto .slide-recorte{position:relative;top:auto;right:auto;bottom:auto;width:100%;padding:0 0 24px;flex-direction:column;align-items:center}}
+
+/* Slide 2: más oscuro a la derecha para que la camioneta blanca destaque */
+.slide.con-foto::before{background:linear-gradient(90deg,rgba(40,44,50,.86) 0%,rgba(40,44,50,.7) 45%,rgba(40,44,50,.62) 100%)}
