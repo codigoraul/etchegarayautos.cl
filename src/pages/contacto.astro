@@ -3,8 +3,9 @@ import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import QuoteForm from '../components/QuoteForm.astro';
 import Icon from '../components/Icon.astro';
-import { getAjustes } from '../lib/api';
+import { getAjustes, VENDEDORES, CORREO } from '../lib/api';
 import { waLink } from '../lib/format';
+import WhatsAppIcon from '../components/WhatsAppIcon.astro';
 const a = await getAjustes();
 const wa = waLink(a, 'Hola, quiero hacer una consulta.');
 const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typeof h === 'string' ? h : `${h.dia ?? ''} ${h.horas ?? ''}`.trim());
@@ -14,15 +15,22 @@ const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typ
   <section class="seccion"><div class="wrap dos" style="align-items:start">
     <div class="caja" id="cotiza"><h2 style="font-size:1.8rem">Escríbenos</h2><QuoteForm tipo="cotizacion" id="contacto" boton="Enviar mensaje" turnstile={a.turnstile_site_key} mensajePlaceholder="¿Qué vehículo te interesa o qué necesitas?" /></div>
     <div>
-      <ul class="lista-ok" style="gap:16px">
-        <li><strong>Dirección:</strong> <a href={a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A'} target="_blank" rel="noopener">{a.direccion}</a></li>
-        {horarios.map((h: string) => <li><strong>Horario:</strong> {h}</li>)}
-        {a.telefono && <li><strong>Teléfono:</strong> <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></li>}
-        <li><strong>Instagram:</strong> <a href={a.instagram} target="_blank" rel="noopener">@etchegarayautos</a></li>
+      <ul class="lista-ico">
+        <li><span class="ic"><Icon n="pin" /></span><span><strong>Dirección:</strong> <a href={a.mapa_url || 'https://maps.app.goo.gl/MsQzrGjWTHZKofny6'} target="_blank" rel="noopener">{a.direccion}</a></span></li>
+        {horarios.length > 0 && <li><span class="ic"><Icon n="clock" /></span><span><strong>Horario:</strong>{horarios.map((h: string) => <><br />{h}</>)}</span></li>}
+        {a.telefono && <li><span class="ic"><Icon n="phone" /></span><span><strong>Teléfono:</strong> <a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></span></li>}
+        {CORREO && <li><span class="ic"><Icon n="mail" /></span><span><strong>Correo:</strong> <a href={`mailto:${CORREO}`}>{CORREO}</a></span></li>}
+        <li><span class="ic"><Icon n="insta" /></span><span><a href={a.instagram} target="_blank" rel="noopener">@etchegarayautos</a></span></li>
       </ul>
-      {wa && <p><a class="btn btn-wa" href={wa} target="_blank" rel="noopener">Escribir por WhatsApp</a></p>}
-      <div style="height:340px"><iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Blanco+Encalada+985,+Temuco&output=embed"></iframe></div>
-      <p><a class="btn btn-linea" href={a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A'} target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+      <h3 style="margin:24px 0 8px">Nuestros vendedores</h3>
+      <p style="margin:0 0 12px">Atienden por WhatsApp. Escribe al que prefieras:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:0">
+        {VENDEDORES.map((v) => <a class="btn btn-wa" href={waLink({ ...a, whatsapp: v.whatsapp }, `Hola ${v.nombre}, quiero consultar por un vehículo.`)} target="_blank" rel="noopener"><span style="width:20px;height:20px;display:inline-block"><WhatsAppIcon /></span> {v.nombre}</a>)}
+      </div>
     </div>
+  </div></section>
+  <section class="seccion" style="padding-top:0"><div class="wrap">
+    <div style="height:380px"><iframe class="mapa" title="Mapa de Etchegaray Autos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?cid=7912309701915001087&hl=es&z=17&output=embed"></iframe></div>
+    <p style="margin-top:20px"><a class="btn btn-linea" href={a.mapa_url || 'https://maps.app.goo.gl/MsQzrGjWTHZKofny6'} target="_blank" rel="noopener">Abrir en Google Maps</a></p>
   </div></section>
 </Base>

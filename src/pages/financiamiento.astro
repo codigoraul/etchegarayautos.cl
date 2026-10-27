@@ -12,6 +12,10 @@ const a = await getAjustes();
       <span class="kicker">Cómo funciona</span>
       <h2>Financia tu próximo vehículo</h2>
       <p class="lead">Trabajamos con distintas financieras para revisar opciones de financiamiento según tu perfil y tus necesidades.</p>
+      <p><strong>Financieras con las que trabajamos:</strong></p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin:0 0 20px">
+        {['Autofin', 'Global'].map((f) => <span class="btn btn-linea" style="pointer-events:none">{f}</span>)}
+      </div>
       <ul class="lista-ok"><li>Evaluamos tu caso y buscamos la mejor alternativa</li><li>Comparamos opciones entre distintas financieras</li><li>También puedes considerar tu auto actual como parte de pago</li><li>Evaluación sujeta a aprobación de la financiera</li></ul>
     </div>
     <div class="caja" id="cotiza"><h3>Cotiza con financiamiento</h3><QuoteForm tipo="cotizacion" id="fin-form" boton="Quiero que me contacten" turnstile={a.turnstile_site_key} /></div>

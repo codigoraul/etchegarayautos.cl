@@ -33,9 +33,21 @@ export type Ajustes = {
   turnstile_site_key: string;
 };
 
+// Correo de contacto de la automotora (completar cuando el cliente lo confirme; si está vacío no se muestra).
+export const CORREO = 'contacto@etchegarayautos.cl';
+
+// Vendedores: atienden solo por WhatsApp. El primero es el número principal del sitio (botón flotante y fichas).
+export const VENDEDORES = [
+  { nombre: 'Diego', whatsapp: '56956073674', visible: '+56 9 5607 3674' },
+  { nombre: 'Emilio', whatsapp: '56983639127', visible: '+56 9 8363 9127' },
+  { nombre: 'Camila', whatsapp: '56940438991', visible: '+56 9 4043 8991' },
+];
+
+const HORARIO_BASE = [{ dia: 'Lunes a viernes', horas: '08:30 a 19:00' }, { dia: 'Sábado', horas: '09:00 a 14:00' }];
+
 const AJUSTES_BASE: Ajustes = {
   nombre: 'Etchegaray Autos', whatsapp: '', telefono: '', direccion: "Blanco Encalada 985, esquina O'Higgins, Temuco",
-  horario: [], instagram: 'https://www.instagram.com/etchegarayautos/', facebook: '', mapa_url: 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A',
+  horario: HORARIO_BASE, instagram: 'https://www.instagram.com/etchegarayautos/', facebook: '', mapa_url: 'https://maps.app.goo.gl/MsQzrGjWTHZKofny6',
   beneficios: [], vendidos_total: 0, resenas: [], acepta_parte_pago: true, acepta_consignacion: true,
   financiamiento: { tasa_mensual: 1.6, pie_minimo: 20, plazos: [12, 24, 36, 48, 60], texto: '' },
   turnstile_site_key: '',
@@ -77,10 +89,13 @@ export function getAjustes() {
       const a = await get('/ajustes');
       return { ...AJUSTES_BASE, ...a, direccion: a.direccion && a.direccion !== 'Blanco Encalada 985, Temuco' ? a.direccion : AJUSTES_BASE.direccion,
         instagram: a.instagram || AJUSTES_BASE.instagram,
+        mapa_url: 'https://maps.app.goo.gl/MsQzrGjWTHZKofny6',
+        whatsapp: a.whatsapp || VENDEDORES[0].whatsapp,
+        horario: Array.isArray(a.horario) && a.horario.length ? a.horario : HORARIO_BASE,
         financiamiento: { ...AJUSTES_BASE.financiamiento, ...Object.fromEntries(Object.entries(a.financiamiento || {}).filter(([, v]) => v !== null && v !== '' && !(Array.isArray(v) && !v.length))) } } as Ajustes;
     } catch (e) {
       console.warn('[api] ajustes no disponibles:', (e as Error).message);
-      return AJUSTES_BASE;
+      return { ...AJUSTES_BASE, whatsapp: VENDEDORES[0].whatsapp };
     }
   })();
   return cacheA;

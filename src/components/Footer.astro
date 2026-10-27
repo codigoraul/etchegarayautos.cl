@@ -1,9 +1,10 @@
 ---
 import { u } from '../lib/format';
 import Icon from './Icon.astro';
+import { CORREO } from '../lib/api';
 const { a } = Astro.props;
 const horarios = (Array.isArray(a.horario) ? a.horario : []).map((h: any) => typeof h === 'string' ? h : `${h.dia ?? ''} ${h.horas ?? ''}`.trim());
-const mapa = a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A';
+const mapa = a.mapa_url || 'https://maps.app.goo.gl/MsQzrGjWTHZKofny6';
 ---
 <footer class="footer">
   <div class="wrap cols">
@@ -31,7 +32,8 @@ const mapa = a.mapa_url || 'https://maps.app.goo.gl/pxYwrjrSGe8hFNx5A';
         <li><a href={mapa} target="_blank" rel="noopener">{a.direccion}</a></li>
         {horarios.map((h: string) => <li>{h}</li>)}
         {a.telefono && <li><a href={`tel:${a.telefono.replace(/[^\d+]/g,'')}`}>{a.telefono}</a></li>}
-        <li><a href={a.instagram} target="_blank" rel="noopener">Instagram @etchegarayautos</a></li>
+        {CORREO && <li><a href={`mailto:${CORREO}`}>{CORREO}</a></li>}
+        <li><a class="ft-ico" href={a.instagram} target="_blank" rel="noopener" aria-label="Instagram @etchegarayautos" title="Instagram @etchegarayautos"><Icon n="insta" /></a></li>
       </ul>
     </div>
   </div>

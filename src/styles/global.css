@@ -384,3 +384,14 @@ dialog.visor button{position:fixed;top:16px;right:16px;width:48px;height:48px;bo
 
 /* Slide 2: más oscuro a la derecha para que la camioneta blanca destaque */
 .slide.con-foto::before{background:linear-gradient(90deg,rgba(40,44,50,.86) 0%,rgba(40,44,50,.7) 45%,rgba(40,44,50,.62) 100%)}
+
+/* Lista de contacto con ícono por línea */
+.lista-ico{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:16px}
+.lista-ico li{display:flex;align-items:flex-start;gap:12px}
+.lista-ico .ic{flex:none;width:32px;height:32px;border-radius:50%;background:transparent;border:1.5px solid var(--rojo-accion);color:var(--carbon);display:inline-flex;align-items:center;justify-content:center}
+.lista-ico .ic svg{width:16px;height:16px;stroke:var(--carbon);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* Ícono de Instagram en el pie */
+.ft-ico{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--rojo-accion);transition:background .2s}
+.ft-ico svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ft-ico:hover{background:var(--rojo-accion)}
