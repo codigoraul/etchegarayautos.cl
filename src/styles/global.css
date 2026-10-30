@@ -242,7 +242,7 @@ a.marca:hover{border-color:var(--rojo-accion);transform:translateY(-2px)}
 
 /* Catálogo */
 .catalogo{display:grid;grid-template-columns:290px 1fr;gap:28px;align-items:start}
-.filtros{background:#fff;border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px 22px 22px;position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto;scrollbar-width:thin;scrollbar-color:#cfd2d8 transparent}
+.filtros{background:#efeff0;border:1px solid var(--borde);border-radius:var(--r-lg);padding:22px 22px 22px;position:sticky;top:96px;max-height:calc(100vh - 116px);overflow:auto;scrollbar-width:thin;scrollbar-color:#cfd2d8 transparent}
 .filtros h2{font-size:1.2rem}
 .filtros .campo{margin-bottom:12px}
 .filtros .fila{gap:10px}
