@@ -1,5 +1,15 @@
 ---
+import '@fontsource/outfit/latin-400.css';
+import '@fontsource/outfit/latin-500.css';
+import '@fontsource/outfit/latin-600.css';
+import '@fontsource/outfit/latin-700.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-500.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
 import '../styles/global.css';
+import fuenteTit from '@fontsource/outfit/files/outfit-latin-600-normal.woff2?url';
+import fuenteTxt from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppIcon from '../components/WhatsAppIcon.astro';
@@ -39,8 +49,8 @@ const bloques = [negocio, ...(jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld
   <meta property="og:title" content={full} /><meta property="og:description" content={descripcion} />
   <meta property="og:url" content={canonical} /><meta property="og:image" content={og} />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href={fuenteTit} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={fuenteTxt} as="font" type="font/woff2" crossorigin />
   {bloques.map((b) => <script type="application/ld+json" set:html={JSON.stringify(b)} />)}
 </head>
 <body>
