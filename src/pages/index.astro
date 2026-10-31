@@ -12,7 +12,7 @@ const a = await getAjustes();
 const disp = vehiculos.filter((v) => v.estado_venta !== 'Vendido');
 const destacados = (disp.filter((v) => v.destacado).concat(disp.filter((v) => !v.destacado))).slice(0, 6);
 // Vehículo que se muestra con cartel en el 2.º slide del hero (por su enlace /autos/<slug>/)
-const SLUG_SLIDE2 = 'mazda-bt-50-2-2-turbo-4x4-2026';
+const SLUG_SLIDE2 = 'peugeot-3008-2026-allure-hibrido-temuco';
 const heroFotos = destacados.map((v) => v.portada || v.galeria?.[0]).filter(Boolean).slice(0, 3);
 const marcas = [...new Set(disp.map((v) => v.marca?.nombre).filter(Boolean))].sort() as string[];
 const tipos = [...new Set(disp.map((v) => v.carroceria).filter(Boolean))].sort();

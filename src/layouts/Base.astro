@@ -8,8 +8,14 @@ import '@fontsource/inter/latin-500.css';
 import '@fontsource/inter/latin-600.css';
 import '@fontsource/inter/latin-700.css';
 import '../styles/global.css';
-import fuenteTit from '@fontsource/outfit/files/outfit-latin-600-normal.woff2?url';
-import fuenteTxt from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import outfit500 from '@fontsource/outfit/files/outfit-latin-500-normal.woff2?url';
+import outfit600 from '@fontsource/outfit/files/outfit-latin-600-normal.woff2?url';
+import outfit700 from '@fontsource/outfit/files/outfit-latin-700-normal.woff2?url';
+import inter400 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import inter500 from '@fontsource/inter/files/inter-latin-500-normal.woff2?url';
+import inter600 from '@fontsource/inter/files/inter-latin-600-normal.woff2?url';
+import inter700 from '@fontsource/inter/files/inter-latin-700-normal.woff2?url';
+const fuentes = [outfit500, outfit600, outfit700, inter400, inter500, inter600, inter700];
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppIcon from '../components/WhatsAppIcon.astro';
@@ -42,15 +48,14 @@ const bloques = [negocio, ...(jsonld ? (Array.isArray(jsonld) ? jsonld : [jsonld
   <link rel="canonical" href={canonical} />
   {(noindex || demo) && <meta name="robots" content="noindex" />}
   <meta name="theme-color" content="#D90000" />
-  <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
-  <link rel="icon" href={u('/favicon.ico')} sizes="48x48" />
+  <link rel="icon" href={u('/favicon.ico')} sizes="16x16 32x32 48x48" />
+  <link rel="icon" href={u('/favicon-192.png')} type="image/png" sizes="192x192" />
   <link rel="apple-touch-icon" href={u('/apple-touch-icon.png')} />
   <meta property="og:type" content="website" /><meta property="og:locale" content="es_CL" />
   <meta property="og:title" content={full} /><meta property="og:description" content={descripcion} />
   <meta property="og:url" content={canonical} /><meta property="og:image" content={og} />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preload" href={fuenteTit} as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href={fuenteTxt} as="font" type="font/woff2" crossorigin />
+  {fuentes.map((f) => <link rel="preload" href={f} as="font" type="font/woff2" crossorigin />)}
   {bloques.map((b) => <script type="application/ld+json" set:html={JSON.stringify(b)} />)}
 </head>
 <body>
