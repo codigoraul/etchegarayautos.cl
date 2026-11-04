@@ -42,7 +42,7 @@ const beneficios = [
   <Hero fotos={heroFotos} wa={wa} destacado={destacados[0] ?? null} slideVeh={disp.find((v) => v.slug === SLUG_SLIDE2) ?? null} />
 
   <section class="buscador" aria-label="Buscar vehículo"><div class="wrap">
-    <form action="/autos/" method="get">
+    <form action={u('/autos/')} method="get">
       <div><label for="b-marca">Marca</label><select id="b-marca" name="marca"><option value="">Todas</option>{marcas.map((m) => <option>{m}</option>)}</select></div>
       <div><label for="b-tipo">Tipo</label><select id="b-tipo" name="tipo"><option value="">Todos</option>{tipos.map((m) => <option>{m}</option>)}</select></div>
       <div><label for="b-precio">Precio máximo</label><select id="b-precio" name="pmax"><option value="">Sin límite</option>{[8, 10, 12, 15, 20].map((n) => <option value={n * 1000000}>Hasta ${n} millones</option>)}</select></div>
