@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import VehicleCard from '../components/VehicleCard.astro';
 import Icon from '../components/Icon.astro';
+import BannerFinanciamiento from '../components/BannerFinanciamiento.astro';
 import { getVehiculos, getAjustes } from '../lib/api';
 import { waLink, foto, slugify, u } from '../lib/format';
 import resenasGoogle from '../data/resenas.json';
@@ -21,6 +22,7 @@ const cats = tipos.map((t) => {
   return { t, n: lista.length, f: lista[0].portada || lista[0].galeria?.[0] };
 });
 const wa = waLink(a, 'Hola, quiero cotizar un vehículo.');
+const waFinanciar = waLink(a, 'Hola, quiero que evalúen el financiamiento de un vehículo.');
 const resenas = a.resenas.length ? a.resenas : resenasGoogle;
 const URL_RESENAS = 'https://maps.app.goo.gl/9YAerzdQYCPEvqBK9';
 const norm = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
@@ -85,10 +87,12 @@ const beneficios = [
 
   <section class={alt()}><div class="wrap">
     <div class="cab"><div><span class="kicker">Marcas</span><h2>Marcas con las que trabajamos</h2></div></div>
+    <div class="marcas-car" data-marcas><button class="marcas-flecha" type="button" data-prev aria-label="Marcas anteriores" hidden>←</button><button class="marcas-flecha" type="button" data-next aria-label="Marcas siguientes" hidden>→</button>
     <div class="marcas-fila">{marcasTrabajo.map((m) => {
       const inner = <><span class="marca-logo">{m.logo ? <img src={u(`/marcas/${m.k}.svg`)} alt={m.nombre} width="56" height="56" loading="lazy" /> : <b>{m.nombre}</b>}</span><span class="marca-nombre">{m.nombre}{m.n > 0 && <small> ({m.n})</small>}</span></>;
       return m.n > 0 ? <a class="marca" href={u(`/autos/?marca=${encodeURIComponent(m.nombre)}`)}>{inner}</a> : <div class="marca">{inner}</div>;
     })}</div>
+    </div>
   </div></section>
 
   <section class={alt()}><div class="wrap">
@@ -96,4 +100,26 @@ const beneficios = [
     <div class="resenas swipe">{resenas.map((r) => <figure class="resena" style="margin:0"><div class="estrellas" aria-label={`${r.estrellas} de 5`}>{'★'.repeat(r.estrellas)}{'☆'.repeat(5 - r.estrellas)}</div><p>{r.texto}</p><strong>{r.nombre}</strong></figure>)}</div>
     <p style="margin:24px 0 0"><a class="btn btn-linea" href={URL_RESENAS} target="_blank" rel="noopener">Ver todas las opiniones en Google</a></p>
   </div></section>
+
+  <BannerFinanciamiento wa={waFinanciar} />
 </Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-marcas]').forEach((c) => {
+    const fila = c.querySelector<HTMLElement>('.marcas-fila')!;
+    const prev = c.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = c.querySelector<HTMLButtonElement>('[data-next]')!;
+    const paso = () => Math.max(fila.clientWidth * 0.8, 150);
+    const estado = () => {
+      const max = fila.scrollWidth - fila.clientWidth;
+      const hay = max > 4;
+      prev.hidden = !hay || fila.scrollLeft < 4;
+      next.hidden = !hay || fila.scrollLeft > max - 4;
+    };
+    prev.addEventListener('click', () => fila.scrollBy({ left: -paso() }));
+    next.addEventListener('click', () => fila.scrollBy({ left: paso() }));
+    fila.addEventListener('scroll', estado, { passive: true });
+    addEventListener('resize', estado);
+    estado();
+  });
+</script>

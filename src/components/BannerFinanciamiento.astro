@@ -1,0 +1,103 @@
+---
+// Banner de financiamiento (réplica en HTML/CSS del afiche de Instagram "Si buscas financiar un vehículo, ¡te evaluamos!").
+// Formato ancho y bajo (~360-400 px en escritorio). Todo es texto real (SEO + responsive).
+// La imagen del auto es /hero/slide-peugeot.webp; para cambiarla, reemplaza ese archivo o la constante `AUTO`.
+import Icon from './Icon.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+import { u } from '../lib/format';
+const { wa = '' } = Astro.props as { wa?: string };
+const AUTO = u('/hero/slide-peugeot.webp');
+const pasos = [
+  ['doc', 'Te evaluamos', 'y vemos la opción que más te acomode.'],
+  ['coin', 'Distintas financieras', 'para ajustarnos a la opción que más te acomode.'],
+  ['shield', 'Háblanos por WhatsApp', 'y revisamos todo de forma segura y virtual.'],
+];
+---
+<section class="fin-sec" aria-labelledby="fin-titulo">
+  <div class="wrap">
+    <div class="fin">
+      <div class="fin-main">
+        <div class="fin-c1">
+          <img class="fin-logo" src={u('/img/logo.png')} alt="Etchegaray Autos" width="260" height="70" loading="lazy" />
+          <h2 id="fin-titulo" class="fin-tit">
+            <span class="fin-si">Si buscas</span>
+            <span class="fin-fin">Financiar</span>
+            <span class="fin-veh">un vehículo</span>
+            <span class="fin-eval">¡Te evaluamos!</span>
+          </h2>
+        </div>
+        <div class="fin-c2">
+          <ul class="fin-lista">
+            {pasos.map(([ic, t, d]) => (
+              <li><span class="fin-ico"><Icon n={ic} /></span><span class="fin-sep" aria-hidden="true"></span><span><strong>{t}</strong>{' '}<span class="fin-d">{d}</span></span></li>
+            ))}
+          </ul>
+          <p class="fin-cta">Contáctanos y encontremos juntos <strong>la mejor opción</strong> para ti.</p>
+          <div class="fin-acc">
+            {wa
+              ? <a class="btn btn-wa" href={wa} target="_blank" rel="noopener"><span class="fin-wa"><WhatsAppIcon /></span> Escríbenos por WhatsApp</a>
+              : <a class="btn btn-rojo" href={u('/contacto/#cotiza')}>Cotizar financiamiento</a>}
+            <a class="btn btn-linea" href={u('/financiamiento/')}>Ver financiamiento</a>
+          </div>
+          <small class="fin-nota">Evaluación sujeta a aprobación de la financiera.</small>
+        </div>
+      </div>
+      <div class="fin-visual">
+        <img src={AUTO} alt="Vehículo disponible en Etchegaray Autos, Temuco" width="1415" height="727" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fin-sec{padding:clamp(28px,4vw,48px) 0;background:#fff}
+  .fin{--corte:70px;position:relative;display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);min-height:340px;max-height:430px;border-radius:var(--r-lg);overflow:hidden;background:#fff;box-shadow:var(--sombra);border:1px solid var(--borde)}
+
+  /* Zona clara (texto), fondo tipo estudio como el afiche */
+  .fin-main{position:relative;z-index:2;display:flex;align-items:center;gap:clamp(24px,3.5vw,48px);padding:clamp(22px,3vw,34px) clamp(22px,3.5vw,44px);background:linear-gradient(135deg,#fff 0%,#eceef1 100%)}
+  .fin-c1{flex:0 0 auto}
+  .fin-c2{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:12px}
+  .fin-logo{height:38px;width:auto;margin-bottom:12px}
+
+  .fin-tit{margin:0;display:flex;flex-direction:column;align-items:flex-start;letter-spacing:0;font-weight:700;text-transform:uppercase;line-height:1}
+  .fin-si{font-size:.78rem;font-weight:500;letter-spacing:.4em;color:var(--gris);margin-bottom:4px}
+  .fin-fin{font-size:clamp(2.4rem,4.6vw,3.9rem);letter-spacing:-.025em;color:var(--rojo-accion)}
+  .fin-veh{font-size:clamp(1.4rem,2.8vw,2.3rem);letter-spacing:-.015em;color:var(--carbon);margin-top:2px}
+  .fin-eval{position:relative;display:inline-block;text-transform:none;font-weight:500;font-size:clamp(1.3rem,2.4vw,1.9rem);color:var(--carbon);transform:skewX(-9deg);margin-top:10px;padding-bottom:7px}
+  .fin-eval::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--rojo-accion),var(--rojo) 70%,transparent)}
+
+  .fin-lista{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .fin-lista li{display:grid;grid-template-columns:40px 3px 1fr;gap:12px;align-items:center;font-size:.86rem;line-height:1.35;color:var(--carbon)}
+  .fin-ico{display:grid;place-items:center;width:40px;height:40px;border:1.5px solid var(--carbon);border-radius:50%}
+  .fin-ico :global(svg){width:20px;height:20px;fill:none;stroke:var(--carbon);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .fin-sep{align-self:stretch;min-height:30px;background:var(--rojo-accion);border-radius:2px}
+  .fin-lista strong{font-family:var(--f-tit);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:.85rem}
+  .fin-d{color:var(--gris)}
+  .fin-cta{margin:4px 0 0;font-size:.88rem;color:var(--carbon)}
+  .fin-cta strong{color:var(--rojo-accion)}
+  .fin-acc{display:flex;gap:10px;flex-wrap:wrap}
+  .fin-acc :global(.btn){min-height:44px;padding:10px 20px;font-size:.92rem}
+  .fin-wa{width:18px;height:18px;display:inline-block}
+  .fin-wa :global(svg){width:18px;height:18px;fill:#fff}
+  .fin-nota{font-size:.74rem;color:var(--gris)}
+
+  /* Zona del auto: panel oscuro con corte diagonal y filo rojo */
+  .fin-visual{position:relative;z-index:1;margin-left:calc(var(--corte) * -1);display:flex;align-items:flex-end;justify-content:center;overflow:hidden;
+    background:radial-gradient(120% 90% at 70% 40%,#4a4f57 0%,#2E3238 45%,#1b1d21 100%);
+    clip-path:polygon(var(--corte) 0,100% 0,100% 100%,0 100%)}
+  .fin-visual::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--rojo-accion);
+    clip-path:polygon(var(--corte) 0,calc(var(--corte) + 12px) 0,12px 100%,0 100%)}
+  .fin-visual img{position:relative;width:128%;max-width:none;height:auto;margin:0 0 6px 14%;filter:drop-shadow(0 18px 22px rgba(0,0,0,.55))}
+
+  @media(max-width:960px){
+    .fin{grid-template-columns:1fr;max-height:none}
+    .fin-visual{order:-1;margin-left:0;clip-path:none;height:210px}
+    .fin-visual::before{clip-path:none;inset:auto 0 0 0;height:5px}
+    .fin-visual img{width:auto;height:100%;max-width:none;margin:0 auto}
+    .fin-main{flex-direction:column;align-items:flex-start}
+    .fin-c2{width:100%}
+  }
+  @media(max-width:560px){
+    .fin-acc{flex-direction:column}.fin-acc :global(.btn){width:100%}
+  }
+</style>
