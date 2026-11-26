@@ -171,6 +171,12 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(46,50,56,.2);bord
 .tag{font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:6px;background:#fff;color:var(--carbon)}
 .tag.oferta{background:var(--rojo-accion);color:#fff}
 .tag.reservado{background:var(--carbon);color:#fff}
+.card.vendido .foto img{filter:grayscale(.85) brightness(.9)}
+.sello-vendido{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);padding:8px 22px;border:3px solid #fff;border-radius:8px;background:var(--rojo-accion);color:#fff;font-weight:800;font-size:1.35rem;letter-spacing:.14em;text-transform:uppercase;box-shadow:0 6px 20px rgba(0,0,0,.25);pointer-events:none}
+.galeria .principal .sello-vendido{font-size:clamp(1.4rem,4vw,2.4rem);z-index:2}
+.precio.vendido-txt{color:var(--gris);text-transform:uppercase;letter-spacing:.06em}
+.aviso-vendido{background:var(--fondo);border-left:4px solid var(--rojo-accion);border-radius:8px;padding:14px 16px;margin-top:14px}
+.aviso-vendido p{margin:0 0 10px}
 .tag.demo{background:#fff3c4;color:#5c4400}
 .card .cuerpo{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
 .card h3{font-size:1.1rem;font-weight:700;margin:0;line-height:1.25}

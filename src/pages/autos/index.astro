@@ -5,10 +5,13 @@ import VehicleCard from '../../components/VehicleCard.astro';
 import { getVehiculos } from '../../lib/api';
 
 const { vehiculos } = await getVehiculos();
-const lista = vehiculos.filter((v) => v.estado_venta !== 'Vendido').sort((a, b) => Number(b.destacado) - Number(a.destacado));
-const uniq = (f: (v: any) => any) => [...new Set(lista.map(f).filter(Boolean))].sort() as string[];
+// Los vendidos se muestran al final, con sello "Vendido" (los filtros solo se arman con los disponibles).
+const esVendido = (v: { estado_venta: string }) => v.estado_venta === 'Vendido';
+const lista = [...vehiculos].sort((a, b) => Number(esVendido(a)) - Number(esVendido(b)) || Number(b.destacado) - Number(a.destacado));
+const disponibles = lista.filter((v) => !esVendido(v));
+const uniq = (f: (v: any) => any) => [...new Set(disponibles.map(f).filter(Boolean))].sort() as string[];
 const marcas = uniq((v) => v.marca?.nombre), tipos = uniq((v) => v.carroceria), trans = uniq((v) => v.transmision), combs = uniq((v) => v.combustible);
-const anios = lista.map((v) => v.anio).filter(Boolean);
+const anios = disponibles.map((v) => v.anio).filter(Boolean);
 ---
 <Base titulo="Vehículos seminuevos y usados" descripcion="Catálogo de autos seminuevos y usados en Temuco. Filtra por marca, tipo, año, precio y kilometraje.">
   <div class="cabecera-pagina"><div class="wrap">
@@ -71,11 +74,11 @@ const anios = lista.map((v) => v.anio).filter(Boolean);
         && (!val('cond') || d.cond === val('cond')) && (!val('trans') || d.trans === val('trans')) && (!val('comb') || d.comb === val('comb'))
         && (amin === null || +d.anio! >= amin) && (amax === null || +d.anio! <= amax)
         && (pmin === null || +d.precio! >= pmin) && (pmax === null || +d.precio! <= pmax) && (kmax === null || +d.km! <= kmax);
-      c.hidden = !ok; if (ok) n++;
+      c.hidden = !ok; if (ok && d.vendido !== '1') n++;
     });
-    [...cards].sort(ord[val('orden')]).forEach((c) => lista.appendChild(c));
-    $('cuenta').textContent = `${n} ${n === 1 ? 'vehículo' : 'vehículos'}`;
-    $('vacio').classList.toggle('visible', n === 0);
+    [...cards].sort((a, b) => +a.dataset.vendido! - +b.dataset.vendido! || ord[val('orden')](a, b)).forEach((c) => lista.appendChild(c));
+    $('cuenta').textContent = `${n} ${n === 1 ? 'vehículo disponible' : 'vehículos disponibles'}`;
+    $('vacio').classList.toggle('visible', !cards.some((c) => !c.hidden));
     const p = new URLSearchParams();
     ids.forEach((k) => { if (val(k)) p.set(k, val(k)); });
     history.replaceState(null, '', p.toString() ? '?' + p : location.pathname);
